@@ -1,0 +1,346 @@
+---
+title             : "Quantitative involvement as a moderator of the interplay between mothers’ and fathers’ qualitative parenting behaviors, and children's emotional adjustment development"
+shorttitle        : "Quantitative and qualitative involvement"
+
+author:
+  - name          : "Caspar J. van Lissa"
+    affiliation   : "1,2"
+    corresponding : yes    # Define only one corresponding author
+    address       : "Padualaan 14, 3584CH Utrecht, The Netherlands"
+    email         : "c.j.vanlissa@uu.nl"
+  - name          : "Renske Keizer"
+    affiliation   : "2"
+
+affiliation:
+  - id            : "1"
+    institution   : "Utrecht University, dept. Youth & Family"
+  - id            : "2"
+    institution   : "Erasmus University Rotterdam, dept. Family Sociology"
+
+author_note: |
+  Add complete departmental affiliations for each author here. Each new line herein must be indented, like this line.
+
+  Enter author note here.
+
+abstract: |
+  Enter abstract here. Each new line herein must be indented, like this line.
+  
+keywords          : "father, involvement, parenting, emotional adjustment, dynamic structural equation modeling"
+wordcount         : "X"
+
+bibliography      : ["DSEM_2017.bib"]  
+
+figsintext        : no
+figurelist        : no
+tablelist         : no
+footnotelist      : no
+lineno            : yes
+mask              : no
+
+class             : "man"
+output            : papaja::apa6_pdf
+---
+
+```{r load_packages, include = FALSE}
+library("papaja")
+library(foreign)
+library(dplyr)
+library(psych)
+library(MplusAutomation)
+library(reshape2)
+library(stringr)
+library(data.table)
+
+source("C:/Users/lissa102/Dropbox/R/RFunctions.r")
+```
+
+```{r read_data, include = FALSE}
+ifnofile("lsacfiles.RData", {
+  lsacfiles <- readLsacdata()
+  saveRDS(lsacfiles, "lsacfiles.RData")
+}, {
+  lsacfiles<-readRDS("lsacfiles.RData")
+})
+
+ifnofile("target.families.HICID.RData", {
+  relationship.cp<-getLsacdata(lsacfiles=lsacfiles, 
+                             invar=c("zf02m2", "zf02m3",       #Sex of parent 1 and 2
+                             "zf09m1", "zf09m2", "zf09m3",     #Country of birth
+                             "zf12m2", "zf12m1"),              #Indigenous status
+                             variant=c("[a-g]f03m1",
+                                       "id12a$",               #Interpreter
+                                       "f11m[123]",            #English spoken in the home
+                                       "^[a-g]prel$",          #study child relationship to parents, 1=2 bio parents
+                                       "^[a-g]paraway$",       #1=both parents currently live in the home
+                                       "[a-g]parpart$",        #2=two parents who are partners
+                                       "[a-g]parsit$",         #1=both bio parents
+                                       "[a-g]p2$",             #study child has two parents in the home 1=yes
+                                       "[a-g]f0[67]m[123]",    #Relationships between parents and child
+                                       "[a-g]f15m[23]",        #Stopped living with the study child 
+                                       "[a-g]af05m1$"))        #Study child living away
+
+  sep<-getLsacdata(lsacfiles=lsacfiles, 
+                               invar=c("dsep$"))        #Study child living away
+  
+  
+  
+  ScreenFun<-function(x, values){
+    ifelse(!all(is.na(x))&&all(x[!is.na(x)] %in% values), 1, 0)
+  }
+  
+  relationship.cp[, "filter_parentsex" := 3-zf02m2]
+  relationship.cp[, "filter_parentsex" := apply(.SD, 1, ScreenFun, values=1), 
+                  .SDcols=c("zf02m3", "filter_parentsex")]
+  
+  relationship.cp[, "filter_parpresent" := apply(.SD, 1, ScreenFun, values=1), 
+                  .SDcols=grep("^[a-g]paraway$", names(relationship.cp), value = TRUE)]
+  
+  relationship.cp[, "filter_bothbio" := apply(.SD, 1, ScreenFun, values=1), 
+                  .SDcols=grep("^[a-g]prel$", names(relationship.cp), value = TRUE)]
+  
+  relationship.cp[, "filter_birthcountry" := apply(.SD, 1, ScreenFun, values=1101), 
+                  .SDcols=grep("f09m[123]$", names(relationship.cp), value = TRUE)]
+  
+  relationship.cp[, "filter_indigenous" := apply(.SD, 1, ScreenFun, values=1), 
+                  .SDcols=grep("zf12m[12]$", names(relationship.cp), value = TRUE)]
+  
+  relationship.cp[, "filter_interpreter" := apply(.SD, 1, ScreenFun, values=4), 
+                  .SDcols=grep("id12a", names(relationship.cp), value = TRUE)]
+  
+  relationship.cp[, "filter_english_language" := apply(.SD, 1, ScreenFun, values=c(0, 1201)), 
+                  .SDcols=grep("f11m[123]$", names(relationship.cp), value = TRUE)]
+  
+  
+  relationship.cp[, "filter" := apply(.SD, 1, ScreenFun, values=1), 
+                  .SDcols=grep("^filter", names(relationship.cp), value = TRUE)]
+  
+  table(relationship.cp$filter)
+  
+  target.families<-relationship.cp[filter==1,]$hicid
+  
+  saveRDS(target.families, "target.families.HICID.RData")
+}, {
+  target.families <- readRDS("target.families.HICID.RData")
+})
+
+ifnofile("filtered_data.RData", {
+  study.variables<-getLsacdata(lsacfiles=lsacfiles, variant=c("[a-g]bseoi$",
+    "[a-g]wseoi$",
+    "^[a-g]se03[mft]\\d\\w$", #Socio-emotional adjustment
+    "^[a-g]pa04[mf]\\d$",
+    "^[a-g]pa10[mf]\\d", #Involvement. Note: These variables end in "a", not in a number
+    "^[a-g]pa11[mf]\\d$",#Consistent parenting
+    "^[a-g]pa13[mf]\\d$",#Angry parenting
+    "^[a-g]pa15[mf]\\d$",#Overprotection
+    "^[a-g]pa18[mf]\\d$",#Monitoring
+    "^[a-g]pa09[mf]\\d$",#Inductive reasoning
+    "^[a-g]pa03[mf]\\d$"))
+    
+    
+    filtered.data<-study.variables[hicid %in% target.families,]
+    
+    filtered.data <- filtered.data[cohort=="K",]
+    filtered.data[, which( colSums(is.na(filtered.data)) == nrow(filtered.data) ) := NULL]
+    saveRDS(filtered.data, "filtered_data.RData")
+}, {
+  filtered.data <- readRDS("filtered_data.RData")
+})
+
+# Waarschijnlijk is dit om descriptives (age) te krijgen. Kan waarschijnlijk vervangen worden met een compleet stukje demographics
+agevars <- relationship.cp[hicid %in% target.families & cohort=="K", .SD, .SDcols=grep("[d-g]f03m1", names(relationship.cp))]
+agevars[, lapply(.SD, function(x){round(c(mean(x, na.rm = TRUE), sd(x, na.rm = TRUE)), 2)})]
+# Eind blokje
+
+```
+
+```{r score_scales, include = FALSE}
+ifnofile("scales.RData", {
+  # Get list of scales from file
+  source("LSAC.scales.list.R")
+  
+  # Remove misscoded 0s in scale data
+  for (j in unlist(scales.list)){
+    set(filtered.data, which(filtered.data[[j]] == 0), j, NA)
+  }
+  ###Reverse code items
+  revthese <-
+    c(
+      "(^[a-g]se03[mft]3\\w$)",
+      "([a-g]se03[mft]5[bc])",
+      "([a-g]pa11[mf][345])",
+      "([a-g]pa13[mf]2)",
+      "([a-g]pa18[mf]4)",
+      "([a-g]pa10[mf]\\d)"      #Involvement
+    )
+  revthese<-unlist(sapply(revthese, grep, names(filtered.data), value=TRUE))
+
+  filtered.data[, (revthese) := lapply(.SD, reverse.code, keys=-1), .SDcols=revthese]
+  
+  #Compute mean scores
+  scales <- doReliability(subset(filtered.data, select=gsub("^-", "", unlist(scales.list))), keys.list=scales.list, name="reliabilitiestest")
+  scales$table_descriptives
+  saveRDS(scales, "scales.RData")
+}, {
+  scales <- readRDS("scales.RData")
+})
+```
+
+```{r mplus_data, include = FALSE}
+scaledata <- cbind(kdata[,.SD, .SDcols=c("hicid", "zf02m1")], data.table(scales$scores))
+setnames(scaledata, c("hicid", "zf02m1"), c("family", "sex"))
+names(scaledata)
+### Select these variables from scaledata
+scaledata[is.na(scaledata)]<-NA
+
+scaledata[ , c("Fin2", "Fin3", "Fin4") := Fin1] #Make involvement constant across time, to be used as between-families variable
+scaledata[ , c("Min2", "Min3", "Min4") := Min1]
+
+# centereddata<-scaledata
+#cols <- names(scaledata)[-c(1, 2)]
+# centereddata[, (cols) := lapply(.SD, scale), .SDcols=cols]
+# describe(centereddata)
+# centereddata <- melt(centereddata, id.vars=c("family", "sex"))
+# centereddata$time <- as.numeric(str_sub(centereddata$variable, -1, -1))
+# centereddata$variable <- str_sub(centereddata$variable, 1, -2)
+# longdat <- dcast(centereddata, family + sex + time ~ variable)
+#longdat$time<-as.numeric(longdat$time)
+#longdat <- longdat[ , c("family", "sex", "time", "Man", "Fan", "Mco", "Fco", "Min", "Fin", "Mre", "Fre", "Mwa", "Fwa", "con", "emo", "pee", "pro")]
+#prepareMplusData(longdat, "22-08-17_longdat_in_constant_centered.dat", inpfile = TRUE)
+
+scaledata <- melt(scaledata, id.vars=c("family", "sex"))
+scaledata$time <- as.numeric(str_sub(scaledata$variable, -1, -1))
+scaledata$variable <- str_sub(scaledata$variable, 1, -2)
+
+longdat <- dcast(scaledata, family + sex + time ~ variable)
+longdat$time<-as.numeric(longdat$time)
+longdat <- longdat[ , c("family", "sex", "time", "Man", "Fan", "Mco", "Fco", "Min", "Fin", "Mre", "Fre", "Mwa", "Fwa", "emo")]
+
+prepareMplusData(longdat, "involvement_recode_emo.dat", inpfile = TRUE, hashfilename = TRUE)
+
+round(cor(longdat[, .SD, .SDcols = grep("^M", names(longdat), value = TRUE)], use="pairwise.complete.obs"),2)
+
+
+createModels("21-08-17_template_dsem.txt")
+setwd("C:/data/Wave 5 GR CD/target sample/DSEM/From_template")
+runModels()
+
+plot(density(longdat$Fco, na.rm = TRUE))
+
+fullscales<-data.table(scales$scores)
+var <- "^Mwar"
+tmp<-fullscales[, .SD, .SDcols = grep(var, names(fullscales))]
+tmp <- tmp[apply((sapply(tmp, is.na)), 1, function(x){length(which(x))}) < 4, ]
+ICC(tmp, missing=FALSE)
+```
+
+```{r analysis_preferences}
+# Seed for random number generation
+set.seed(42)
+```
+
+Fathers have been hypothesized to play a unique role in children's emotional adjustment development, because they encourage children to challenge themselves, in play and in life (Flouri, 2010; Hagan& Kuebli, 2007; Sandseter & Kennair, 2011 ; Clarke-Stewart, 1980; Hossain & Roopnarine, 1994; Paquette, Carbonneau, Dubeau, Bigras, & Tremblay, 2003; Parke, 1996) (Panksepp, Burgdorf, Turner, & Gordon, 2003) (Fletcher, St. George, & Freeman, 2013; Grossmann, Grossmann, Kindler, & Zimmermann, 2008; Paquette & Dumont, 2013). Emotional adjustment, defined as the absence of internalizing symptoms and manifest signs of emotional dysregulation [@GoodmanPsychometricpropertiesstrengths2001], is an important developmental outcome, because it is integral to social competence, academic achievement, and the absence of psychopathology (Gross, 2013; Lin, Lawrence, & Gorrell, 2003) Aldao, Nolen-Hoeksema, & Schweizer, 2010). By encouraging children to venture outside their comfort zone, fathers are thought to stimulate a wide range of unpredictable emotions, thereby structuring opportunities to expand children's emotional repertoire. Compared to the familiar notion of an "attachment relationship", grounded in comfort and support, the father-child relationship can thus be construed as an "activation relationship" (REF). 
+
+## Fatherhood theory
+
+The past decades have seen major strides in the consolidation of theories to guide fatherhood research. Initially, such research was inspired by two major societal shifts: Increasing divorce rates, and mothers’ greater labor force participation, both of which impacted the extent of fathers’ participation in childrearing. Consequently, early research focused primarily on the quantity of paternal involvement: Whether fathers were present or absent in divorced families, and how much they contributed to the work of childcare in intact families [@Lambbiosocialperspectivepaternal1987]. Over time, the notion of the father as a coparent gained ground (Burgess 1997; Cabrera and TamisLeMonda 1999; Coleman and Ganong 2004; Pleck and Pleck 1997), and conceptualizations of father involvement evolved to encompass qualitative dimensions as well, including warmth, responsiveness, and control [@PleckPaternalinvolvementRevised2004]. Nowadays, it is widely acknowledged that both the quantity and quality of parental involvement are relevant factors in child development [@FaganShouldresearchersconceptualize2014; @PleckPaternalinvolvementRevised2004]. Interactions between quantity and quality have rarely been considered, however, perhaps in part because, historically, interest in these dimensions has varied across discipline lines. Sociology and gender studies, for instance, have primarily focused on involvement quantity [@CraigDoesFatherCare2006; @FaganShouldresearchersconceptualize2014], whereas developmental psychology has focused on how fathers’ qualitative parenting behaviors influence child development. The present study attempts to bridge these disciplines, by investigating whether the division of quantitative involvement between mothers and fathers moderates the influence of their qualitative parenting behaviors in children’s emotional adjustment development over time.
+
+## Interactions between involvement quantity and quality
+
+One remaining limitation of the aforementioned theoretical models of fatherhood is that they have not explicitly addressed potential interactions between involvement quantity and quality [@JaffeeLifeFatherBenefits2003]. For example, children's emotional adjustment might be differently impacted by a father's efforts to exert control if he is generally highly involved with the day-to-day minutiae of childrearing, than when he is generally absent. Conversely, children's emotional adjustment might elicit different qualitative parenting behaviors from hands-on fathers, who which struggles give rise to their children's maladjustment, than from out-of-touch fathers, who might perceive maladjustment as a problem behavior. With regard to such interactions between involvement quantity and quality, existing theories of father involvement are complemented by Feinberg’s coparenting model [@FeinbergInternalStructureEcological2003]. Coparenting refers to the ways parents relate to each other in the role of parent. Although the coparenting literature typically focuses on divorced families it holds insights for intact families, too. One dimension of coparenting is involvement quantity, which Feinberg defines as the ``division of labor’’ in childcare. According to Feinberg’s model, coparenting is directly associated with children’s adjustment and parents’ qualitative childrearing behaviors, as well as the link between these constructs. There is some preliminary empirical support for such interactions. For instance, fathers' playful and caring involvement predicted preschoolers' emotional adjustment in school, but only when accompanied by a supportive coparenting relationship (Jia et al., 2012). Furthermore, in adolescence, the quantity of paternal education-related structure, an age-appropriate form of involvement, interacted with paternal warmth to predict both academic achievement and behavioral adjustment [@WangParentalInvolvementAfrican2014]. Thus, applying this insight from the coparenting literature, we might expect involvement quantity to be associated with parenting quality and emotional adjustment, and to moderate prospective links between qualitative parenting dimensions and children's emotional adjustment. 
+
+## Operationalizing quantitative involvement
+
+A second important insight from coparenting theory is that the *distribution* of childcare labor - that is, parents' relative contributions to childrearing - might be more relevant for predicting children's adjustment than either parent's absolute level of quantitative involvement (REF Kroll). The equity of the childcare labor distribution has been found to affect children's development directly (Deutsch et al., 2001), and to impact the emotional climate of the interparental relationship (Craig, 2006). When childcare is unequally distributed, women often perform a disproportionate share of the work (Craig, 2006). This strains the marital relationship [@ShockleyItnotwhat2018], and the resulting stress erodes parenting quality, particularly for difficult children (Jenkins et al., 2003). A second reason for focusing on the distribution of childcare, is that examining parents' absolute involvement introduces a potential confound: Any effect that appears to be due to fathers' greater involvement might, in fact, be due to children receiving greater a greater total amount of parental care (see also Deutsch, 2001). Operationalizing quantitative involvement in terms of the childcare distribution, while controlling for total joint care provided by both parents, mitigates this confound. One way in which prior research has attempted to capture the childcare distribution is by asking who has most responsibility for certain task, on a continuum from the mother doing everything to the father doing everything [@KrollEarlyFatherInvolvement2016]. An elegant alternative, which statistically disentangles quantity from the distribution of care, is to use a latent mean and difference approach. This technique is typically used to capture the difference between consecutive longitudinal measurements [@McArdleLatentVariableModeling2009], but it can also be implemented to re-express mothers' and fathers' absolute quantitative involvement into a "latent mean" of involvement, which represents the total joint care provided by both parents, and latent differential involvement, which represents the extent to which one parent is more involved than the other. This approach taps directly into a theoretically relevant construct, and prevents confounding.
+
+Kroll: No evidence for effect of quantitative involvement This might help explain why some studies, focusing on absolute involvement, have concluded that fathers' quantitative involvement does not predict children's adjustment when controlling for mothers' involvement>> Kroll actually used absolute involvement and "who does most"-questions, which measure relative involvement
+
+
+## Main effects of quantitative involvement
+
+According to bioecological theories of development, children require a certain amount of care, and who provides this care is, to some extent, flexible [@BronfenbrennerEcologyHumanDevelopment1979]. This suggests that the amount of total joint care provided should be positively associated with children's emotional adjustment. Differential involvement, on the other hand, might be negatively linked to emotional adjustment: When children perceive that one of their parents is relatively uninvolved, they will likely feel less supported than when both parents are equally invested in their wellbeing [@DEUTSCHPaternalParticipationChild2001]. 
+
+Parents' quantitative involvement is also likely to be associated with the quality of their involvement. First, it stands to reason that, as parents spend more time with their children, the quality of their parenting will increase through practice and experience. Thus, greater total joint care should positively predict parenting quality, whereas greater differential involvement should positively predict parenting quality of the more involved parent only. Differential involvement might also impact involvement quality through its effect on the marital relationship. Childcare responsibilities are a heavy burden if they come down on a single parent's shoulders [@DEUTSCHPaternalParticipationChild2001]. Consequently, an unfair distribution of childare is associated with greater maternal anger and resentment, and reduced marital quality (Goodnow, 1998; Ross and Van Willigen 1996). The resulting strain on the interparental relationship interferes with warm, sensitive parenting [@FeinbergInternalStructureEcological2003]. Fathers are as capable as mothers of caring for their children (Lamb 1997; Yeung et al. 2001), and on average, their involvement in childcare is growing (Cabrera et al. 1999). When fathers do take on childcare responsibilities, this benefits mothers directly by relieving some of this burden (Pleck, 2010). Thus, when care is distributed relatively equally, the entire family system will likely be more harmoneous. 
+
+## The interplay between qualitative parenting behaviors and emotional adjustment
+
+The standard family environment model posits that the quality of parents' involvement is a proximal mechanism, shaping children's development (Amato and Cheadle 2008). Studies following this model have found that fathers' qualitative involvement is associated with emotional adjustment, even after accounting for mothers' influence (Flouri 2010). Moreover, there is evidence for unique roles of fathers' versus mothers' qualitative parenting behaviors, in line with the aforementioned distinction between the "activation relationship" versus "attachment relationship" [@PaquetteTheorizingfatherchildrelationship2004]. Fathers activate children by encouraging them to take risks and overcome obstacles, and live up to certain standards for behavior, whereas mothers empathize more with their children, and provide more warmth and support (Majdandžić, Möller, de Vente, Bögels, & van den Boom, 2014; Paquette, 2004). Empirical research supports these unique roles for mothers and fathers in children's emotional adjustment development: Mothers tend to encourage the expression of emotions, and respond warmly and supportively, whereas fathers structure and sanction emotion expressions to a greater extent (Cassano, Perry-Parrish, & Zeman, 2007 Eisenberg et al., 1999). Furthermore, mothers' supportive behavior was found to be a better predictor of children’s adjustment than their controlling behavior, whereas the inverse held for fathers (McDowell, Parke, & Wang, 2003). Paradoxically, there is also evidence that mothers' negative parenting has a stronger negative impact upon children's emotional adjustment than fathers' negative parenting [@ChangHarshParentingRelation2003]; perhaps because this behavior is incongruous with mothers' prototypical role as an attachment figure. Based on these findings, we might also expect warmth and support to play a stronger role in mother-child relationships, and structuring behaviors to play a stronger role in father-child relationships.
+
+## Child effects
+
+The notion of child effects was initially introduced by Bell (1986), who noted that correlations between parenting and child adjustment might be equally well explained by children affecting parents. There is now substantial evidence to suggest that children's adjustment problems elicit less support, more structure, and more negative parenting from parents [@GadeyneLongitudinalRelationsParenting2004], @NepplIntergenerationalContinuityParenting2009, LenguaBidirectionalassociationstemperament2005]. Child effects have been more consistently investigated in the adolescent literature than in the childhood literature. This might be because the notion of children influencing parents is more salient in adolescence, when parent-child relationships become increasingly egalitarian. Nonetheless, findings from the adolescent literature are broadly in line with the childhood literature, suggesting that emotional adjustment problems predicts decreased parental support, and greater control (Otterpohl & Wild, 2015; Van der Giessen, Branje, & Meeus, 2014; Wijsbroek, Hale, Raaijmakers, & Meeus, 2011). Thus, parents' responses to maladjustment appear to be a combination of punitive responses, including decreased support and increased negative parenting, and corrective responses, such as increased structure and control. Moreover, parents' responses to adjustment problems are contingent on children's age: Because younger children are perceived to be less competent than older children, mothers respond to their misbehavior more inductively, and less punitively (Dix, 1991). **We might thus expect emotional adjustment to predict....**
+
+## Direction of effects
+
+According to the transactional view of family relationships, parents and children reciprocally influence one another (Kerr et al., 2012; Amato and Cheadle 2008). This view of the family as a dynamic system whose members reciprocally influence one another is now widely accepted [@KerrPerceivedparentingstyle2012]. Nevertheless, it is not yet common practice to examine bi-directional effects. Consequently, there has been a call for research to tease apart the direction of effects between parents and children (REF Flouri). When studies do consider such effects, they often employ cross-lagged panel models. These models have recently been criticized for misrepresenting over-time predictive effects, if there are stable between-family differences in the variables studied. Thus, the direction of effects between parents and children remains an issue to be examined. Recent methodological innovations hold the potential to estimate dynamic reciprocal processes within families more accurately, by controlling for stable between-family differences: The random-intercept cross-lagged panel model, which is an extension of the standard cross-lagged panel model, and dynamic structural equation modeling (DSEM); a multilevel generalization of this model. Several studies have re-examined the direction of effects between parents and children using these models, but mostly in adolescent samples. One study is noteworthy, because it used the random-intercept cross-lagged panel model to examine the interplay between maternal and paternal qualitative parenting dimensions, and adolescents' emotional adjustment. Results indicated that mothers' role in adolescents' emotional adjustment development occurred primarily through support, whereas fathers influenced adolescents through behavioral control (Van Lissa et al., under review). Interestingly, over-time predictive effects were sparse, and most associations between study variables appeared to be due to stable between-family differences. This suggests that reciprocal dynamic processes might be less prominent than previous research suggested. Instead, third variables, such as socio-economic status, or shared genetic factors, might play a larger role - another outstanding issue on which further research is required (REF Flouri). Furthermore, child effects were found to substantially outnumber parenting effects; a finding which might be due to the relative equality of adolescent-parent relationships when compared to parent-child relationships. If this is the case, we might expect to find more prominent parenting effects in the present study on younger children.
+
+## Differences between sons and daughters
+
+<!-- pubertal timing and associated changes in hormone levels during adolescence are related to sex-typed attributes, including emotional distress (Brooks-Gunn, Graber, & Paikoff, 1994; Susman, Dorn, & Chrousos, 1991).-->
+
+At a young age, there is little evidence for sex differences in emotional adjustment, as indicated by a meta-analysis which found no sex differences in the temperament dimension of negative affectivity, based primarily on infant and toddler samples [@Else-questGenderdifferencestemperament2006]. In older children, there is substantial evidence for such sex differences [@SilkAdolescentsemotionregulation2003], but these appear to intensify in puberty [@HillIntensificationGenderRelatedRole1983]. There is substantial evidence, however, parents tend to raise boys and girls differently. For example, parents tend control girls to a greater extent than boys (e.g., Pomerantz & Ruble, 1998; Smetana & Daddis, 2002), and exert more negative parenting with boys than with girls (Straus and Stewart 1999). Another point to consider is the interplay between parent and child sex. According to social learning theory, the same-sex parent plays a stronger role in a child’s development (Bussey & Bandura, 1999), particularly in the socialization of sex-typed behavior, such as display rules for emotions [@Brodysocializationgenderdifferences2000]. Thus, we might expect child sex to predict the same-sex parents' qualitative involvement, and associations between parenting and emotional adjustment might be stronger for same-sex parent-child dyads. There is also evidence that parental sensitivity is greatest in mother-daughter relationships, and lowest in father-son relationships (Lovas, 2005; Schoppe-Sullivan et al., 2006). These findings suggest that boys tend to receive a "tougher" upbringing than girls. In sum, it is clear that sex differences are a relevant factor in the interplay between parenting and emotional adjustment. Specifically, we might expect to find parents, display more responsiveness, structure, and inductive reasoning with girls than with boys. Boys, on the other hand, might receive more negative parenting. Furthermore, we might expect associations between qualitative parenting behaviors and emotional adjustment to be stronger between children and the same-sex parent. 
+
+## The present study
+
+The present study aimed to make several contributions to the literature on fathers' role in their children's emotional adjustment development. First, we included both mothers and fathers, in order to tease apart their common and unique roles. Second, we incorporated both quantitative involvement, in terms of total joint childcare and the childcare distribution, and qualitative involvement, in terms of specific parenting behaviors. Third, we examined interactions between quantitative and qualitative involvement, which have been largely overlooked in prior work. Fourth, we employed recent methodological advances to disentangle stable between-family differences from dynamic within-family predictive processes, in order to more accurately assess the direction of effects between parenting behaviors and emotional adjustment.
+
+Based on our review of the literature, we expected that involvement quantity and quality would interact, such that a more skewed distribution of quantitative involvement would interfere with the effects of qualitative parenting behaviors on children, and parents' adaptive responses to children's maladjustment. In other words, we expected that an unfair childcare distribution would predict suboptimal parenting, and parental responses to maladjustment, due to the strain such a distribution places upon the entire family system. We further hypothesized that quantitative involvement would predict children's adjustment directly: Greater joint total care should predict better emotional adjustment, whereas a more skewed distribution of care should predict poorer emotional adjustment. Greater joint care should also predict both parents' qualitative involvement, in the sense of greater responsiveness and structure, and lower negative parenting. A more skewed distribution of care, on the other hand, should show these associations only for the more involved parent. Finally, we expected specific qualitative parenting dimensions to be associated with emotional adjustment at both the within- and between-family level. The literature suggests that responsiveness, structure, and reasoning should be positively associated, whereas negative parenting should be negatively associated, with emotional adjustment. With regard to child effects, we might expect some of these paths to be reversed: Maladjustment should elicit decreased responsiveness, but increased structure, reasoning, and negative parenting. We also accounted for potential effects of child sex.
+
+# Methods
+
+## Participants
+
+<!--As a detailed description of the LSAC study has been given on pages 4-9 of this edition of Family Matters, only a brief overview is provided here (see also the LSAC Annual Report, FaCS, 2005). The LSAC study is following two cohorts of children from urban and rural areas of all states of Australia through early and mid childhood. It aims to provide comprehensive data on Australian children’s wellbeing and progress that can be used to underpin policy development and service provision for young children and their families (FaCS 2005). The two LSAC cohorts are broadly representative of the Australian population, although there are trends for the cohorts to be slightly more advantaged than the general population. The study uses weighting to adjust for this. Data from the first LSAC survey wave, collected in 2004, are used here. The younger cohort of 5104 children was aged between 3 and 18 months, with an average age of 8.8 months. The older cohort (N=4976 children) was aged between 51 and 67 months, and averaged 56.9 months. -->
+
+We employed data from the K-cohort of the Longitudinal Study of Australian Children (LSAC), waves 2-5, which were collected during biannual home visits, and self-report questionnaires sent by mail, from 2006-2012. LSAC employed a clustered sampling design to obtain a sample broadly representative of the Australian population (see, Soloff et al., 2005). A detailed description of the study design and procedure is available at http://data.growingupinaustralia.gov.au/. 
+
+Our target population consisted of native Australian, non-minority, intact, biological families. This yielded a subsample of 1884 families. Children were approximately 6 years old at T1, $M = 6.28$, $SD = .45$, and 12 at T4 ($M = 12.42$, $SD = .49$).
+
+REPHRASE AND PROVIDE APPROPRIATE DEMOGRAPHICS: **Socio-demographic characteristics of our study sample are described in Table X. There were clear differences between mothers and fathers in terms of socio-demographic and work characteristics. For both mothers and fathers, the most common family employment type was a couple dual-earner family. Of couple fathers, 29 per cent were the sole breadwinner compared to less than three per cent of couple mothers. The median annual income range for families was between $78,000 and $114,399. However, the median individual income for mothers was $32,500 and $62,782 for fathers, indicating a large income gap.**
+
+## Design
+Quantitative involvement was measured once, at T1. Emotional adjustment and four qualitative parenting dimensions were measured biannually.
+
+## Measures
+
+### Emotional adjustment
+
+Emotional adjusmtment was measured using the reverse-coded emotional distress subscale of the Strengths and Difficulties Questionnaire, reported by teachers on a three-point scale from "not true" to "certainly true" (e.g., "Often unhappy, downhearted or tearful"; Goodman, 1999). Scale descriptives are displayed in Table X, and scale score intercorrelations are reported in the online supplement SX.
+
+### Quantitative involvement
+
+Both parents rated their involvement in four different child care on a five-point scale ranging from "once a day or more" to "not at all", using the self-report questionnaire (e.g.: "In the past month how often did you help get this child ready for school?"). **REPORT CFA, measurement invariance**
+
+### Qualitative involvement
+
+Parents completed measures of several qualitative parenting dimensions.
+Responsiveness and inductive reasoning were measured using the warmth (e.g., "How often do you express affection by hugging, kissing and holding this child?") and inductive reasoning (e.g., "Talk it over and reason with this child when he/she misbehaved?") subscales of the Child Rearing Questionnaire (CRQ; Paterson & Sanson, 1999). Structure and negative parenting were measured using the consistency and anger scales developed by the Canadian National Longitudinal Survey of Children and Youth (NLSCY; Statistics Canada, 2000). For these instruments, parents reported on their own behavior using five-point scales, ranging from "never or almost never" to "always or almost always".
+
+
+## Participants
+
+## Material
+
+## Procedure
+
+## Data analysis
+We used `r cite_r("DSEM_2017.bib")` for all our analyses.
+
+
+# Results
+
+# Discussion
+
+
+\newpage
+
+# References
+```{r create_r-references}
+r_refs(file = "DSEM_2017.bib")
+```
+
+\begingroup
+\setlength{\parindent}{-0.5in}
+\setlength{\leftskip}{0.5in}
+
+<div id = "refs"></div>
+\endgroup

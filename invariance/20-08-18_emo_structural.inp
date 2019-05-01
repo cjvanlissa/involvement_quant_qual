@@ -1,0 +1,176 @@
+TITLE: Your title goes here
+DATA: FILE = "20-08-18_items.dat";
+VARIABLE: 
+NAMES = Man1_1 Man1_2 Man1_3 Man1_4 Man1_5 Man1_6 Man2_1 Man2_2 Man2_3 Man2_4 Man2_5
+     Man2_6 Man3_1 Man3_2 Man3_3 Man3_4 Man3_5 Man3_6 Man4_1 Man4_2 Man4_3 Man4_4
+     Man4_5 Man4_6 Fan1_1 Fan1_2 Fan1_3 Fan1_4 Fan1_5 Fan1_6 Fan2_1 Fan2_2 Fan2_3
+     Fan2_4 Fan2_5 Fan2_6 Fan3_1 Fan3_2 Fan3_3 Fan3_4 Fan3_5 Fan3_6 Fan4_1 Fan4_2
+     Fan4_3 Fan4_4 Fan4_5 Fan4_6 Mco1_1 Mco1_2 Mco1_3 Mco1_4 Mco1_5 Mco2_1 Mco2_2
+     Mco2_3 Mco2_4 Mco2_5 Mco3_1 Mco3_2 Mco3_3 Mco3_4 Mco3_5 Mco4_1 Mco4_2 Mco4_3
+     Mco4_4 Mco4_5 Fco1_1 Fco1_2 Fco1_3 Fco1_4 Fco1_5 Fco2_1 Fco2_2 Fco2_3 Fco2_4
+     Fco2_5 Fco3_1 Fco3_2 Fco3_3 Fco3_4 Fco3_5 Fco4_1 Fco4_2 Fco4_3 Fco4_4 Fco4_5
+     Min1_1 Min1_2 Min1_3 Min1_4 Min1_5 Fin1_1 Fin1_2 Fin1_3 Fin1_4 Fin1_5 Mre1_1
+     Mre1_2 Mre1_3 Mre2_1 Mre2_2 Mre2_3 Mre2_4 Mre2_5 Mre3_1 Mre3_2 Mre3_3 Mre3_4
+     Mre3_5 Mre4_1 Mre4_2 Mre4_3 Mre4_4 Mre4_5 Fre1_1 Fre1_2 Fre1_3 Fre2_1 Fre2_2
+     Fre2_3 Fre2_4 Fre2_5 Fre3_1 Fre3_2 Fre3_3 Fre3_4 Fre3_5 Fre4_1 Fre4_2 Fre4_3
+     Fre4_4 Fre4_5 Mwa1_1 Mwa1_2 Mwa1_3 Mwa1_4 Mwa1_5 Mwa1_6 Mwa2_1 Mwa2_2 Mwa2_3
+     Mwa2_4 Mwa2_5 Mwa2_6 Mwa3_1 Mwa3_2 Mwa3_3 Mwa3_4 Mwa3_5 Mwa3_6 Mwa4_1 Mwa4_2
+     Mwa4_3 Mwa4_4 Mwa4_5 Mwa4_6 Fwa1_1 Fwa1_2 Fwa1_3 Fwa1_4 Fwa1_5 Fwa1_6 Fwa2_1
+     Fwa2_2 Fwa2_3 Fwa2_4 Fwa2_5 Fwa2_6 Fwa3_1 Fwa3_2 Fwa3_3 Fwa3_4 Fwa3_5 Fwa3_6
+     Fwa4_1 Fwa4_2 Fwa4_3 Fwa4_4 Fwa4_5 Fwa4_6 emo1_1 emo1_2 emo1_3 emo1_4 emo1_5
+     emo2_1 emo2_2 emo2_3 emo2_4 emo2_5 emo3_1 emo3_2 emo3_3 emo3_4 emo3_5 emo4_1
+     emo4_2 emo4_3 emo4_4 emo4_5;
+MISSING=.;
+
+USEVARIABLES = 
+ emo1_1 emo1_2 emo1_3 emo1_4 emo1_5  emo2_1 emo2_2 emo2_3 emo2_4 emo2_5
+      emo3_1 emo3_2 emo3_3 emo3_4 emo3_5  emo4_1 emo4_2 emo4_3 emo4_4
+     emo4_5 ;
+
+MODEL:
+[emo1_1*];
+[emo1_2*];
+[emo1_3*];
+[emo1_4*];
+[emo1_5*];
+
+[emo2_1*];
+[emo2_2*];
+[emo2_3*];
+[emo2_4*];
+[emo2_5*];
+
+[emo3_1*];
+[emo3_2*];
+[emo3_3*];
+[emo3_4*];
+[emo3_5*];
+
+[emo4_1*];
+[emo4_2*];
+[emo4_3*];
+[emo4_4*];
+[emo4_5*];
+
+
+
+emo1_1*;
+emo1_2*;
+emo1_3*;
+emo1_4*;
+emo1_5*;
+
+emo2_1*;
+emo2_2*;
+emo2_3*;
+emo2_4*;
+emo2_5*;
+
+emo3_1*;
+emo3_2*;
+emo3_3*;
+emo3_4*;
+emo3_5*;
+
+emo4_1*;
+emo4_2*;
+emo4_3*;
+emo4_4*;
+emo4_5*;
+
+
+emo1@1;
+[emo1@0];
+emo2@1;
+[emo2@0];
+emo3@1;
+[emo3@0];
+emo4@1;
+[emo4@0];
+
+
+emo1 BY emo1_1*;
+emo1 BY emo1_2*;
+emo1 BY emo1_3*;
+emo1 BY emo1_4*;
+emo1 BY emo1_5*;
+
+
+
+emo2 BY emo2_1*;
+emo2 BY emo2_2*;
+emo2 BY emo2_3*;
+emo2 BY emo2_4*;
+emo2 BY emo2_5*;
+
+
+
+emo3 BY emo3_1*;
+emo3 BY emo3_2*;
+emo3 BY emo3_3*;
+emo3 BY emo3_4*;
+emo3 BY emo3_5*;
+
+
+emo4 BY emo4_1*;
+emo4 BY emo4_2*;
+emo4 BY emo4_3*;
+emo4 BY emo4_4*;
+emo4 BY emo4_5*;
+
+
+
+
+emo1_1 WITH emo2_1;
+emo1_1 WITH emo3_1;
+emo1_1 WITH emo4_1;
+emo2_1 WITH emo3_1;
+emo2_1 WITH emo4_1;
+emo3_1 WITH emo4_1;
+
+
+emo1_2 WITH emo2_2;
+emo1_2 WITH emo3_2;
+emo1_2 WITH emo4_2;
+emo2_2 WITH emo3_2;
+emo2_2 WITH emo4_2;
+emo3_2 WITH emo4_2;
+
+
+emo1_3 WITH emo2_3;
+emo1_3 WITH emo3_3;
+emo1_3 WITH emo4_3;
+emo2_3 WITH emo3_3;
+emo2_3 WITH emo4_3;
+emo3_3 WITH emo4_3;
+
+
+emo1_4 WITH emo2_4;
+emo1_4 WITH emo3_4;
+emo1_4 WITH emo4_4;
+emo2_4 WITH emo3_4;
+emo2_4 WITH emo4_4;
+emo3_4 WITH emo4_4;
+
+
+emo1_5 WITH emo2_5;
+emo1_5 WITH emo3_5;
+emo1_5 WITH emo4_5;
+emo2_5 WITH emo3_5;
+emo2_5 WITH emo4_5;
+emo3_5 WITH emo4_5;
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+OUTPUT: standardized modindices;
