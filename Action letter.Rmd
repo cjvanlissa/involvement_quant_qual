@@ -231,14 +231,42 @@ With all due respect, we do not entirely understand the Reviewer's comment, but 
 
 > On average, we found no support for within-family predictive links between consistency and adjustment, but we did find support for between-family level correlations. Between-family level correlations can have different causes: They can reflect the consolidated influence of predictive effects that occurred prior to the study, or alternatively, the influence of third variables that impact both constructs. The fact that our study included children from a very young age casts doubt on the former explanation. It seems more likely that third variables explain these associations. Economic hardship, for instance, undermines parents' capacity for consistent parenting, as well as children's socio-emotional adjustment [@mcloydImpactEconomicHardship1990]. This finding means that we should reflect critically on causal interpretations of prior research that did not control for stable between-family differences [e.g., @brandPerceivedParentalInconsistency1990]. 
 
-15. Regarding the direction of effects, is your conclusion that child effects are stronger than parenting effects driven entirely by the size of the coefficient? Did you conduct any tests to compare the two models and their coefficients? I assume parenting and child effects were run separately considering they are modeled as predicting different outcomes?
-16. Can you test for non-linear effects of quantitative involvement on emotional adjustment? Your explanation that excessive involvement leads to maladjustment makes sense, but one would expect a u-shaped curve in which adjustment is highest at an optimal middle ground of involvement. You could also test for mean differences in emotional adjustment for children with highly involved parents versus less involved parents. It could be, as you argue in the next section of the discussion, that the effect of involvement on emotional adjustment is stronger when only one parent is involved because there is less variability in children's adjustment when both parents are highly involved. This would help test your two suggested explanations.
+\rc{15. Regarding the direction of effects, is your conclusion that child effects are stronger than parenting effects driven entirely by the size of the coefficient? Did you conduct any tests to compare the two models and their coefficients?} 
 
+We appreciate the suggestion; we are indeed only interpreting the pattern of effects (i.e., which effects differ 'significantly' from zero), and it would be better to explicitly test the difference between these parameters (i.e., which parent and child effects differ significantly from one another). In the revision, we have attempted to address this comment by explicitly acknowledging this in the Discussion section. 
 
-### end actual comment
+We would prefer not to incorporate these tests for two reasons:
 
+1. We have no hypotheses about the difference between parent and child effects. Including difference tests would therefore introduce an additional and unnecessary layer of complexity to the manuscript - which is already very complex.
+2. For practical reasons: Each of the four models we conducted takes approximately a week to run (MCMC sampling is very computationally expensive).
 
+If the Editor deems it necessary to include these tests nonetheless, we will do so of course, but we'd need a longer turnaround time for the next revision.
 
+\Done
+
+\rc{I assume parenting and child effects were run separately considering they are modeled as predicting different outcomes?}
+
+This is not the case; parent and child effects refer to the reciprocal effects between the parenting variables and child adjustment; both variables must be included in one model to examine these reciprocal effects.
+
+\Done
+
+\rc{16. Can you test for non-linear effects of quantitative involvement on emotional adjustment? Your explanation that excessive involvement leads to maladjustment makes sense, but one would expect a u-shaped curve in which adjustment is highest at an optimal middle ground of involvement.}
+
+We appreciate the Reviewer's suggestion. There are probably good grounds to question the linearity of *all* processes within the family system. However, it is not within the scope of our paper to make that point. We would be happy to conduct the exploratory analysis proposed by the Reviewer, but we are limited by the possibilities of contemporary statistical software. Estimating this non-linear effect involves a latent variable interaction of quantitative involvement with itself, to obtain the quadratic term. Latent variable interactions cannot currently be estimated within the Bayesian framework (they require Monte Carlo integration). Thus, we must choose: We can either test our theoretical model, which requires Bayesian estimation using Gibbs sampling, or we can conduct some kind of exploratory analysis of this proposed non-linear effect but with a much simpler model that can be estimated using numerical integration. Of course, we would prefer to analyze our theoretical model.
+
+\Done
+
+\rc{You could also test for mean differences in emotional adjustment for children with highly involved parents versus less involved parents. It could be, as you argue in the next section of the discussion, that the effect of involvement on emotional adjustment is stronger when only one parent is involved because there is less variability in children's adjustment when both parents are highly involved. This would help test your two suggested explanations.}
+
+We appreciate the suggestion, but we believe that this comment might be due to an oversight on the Reviewer's part. We do investiage these effects, and they are reported in the section titled **Effects of quantitative involvement on parenting and adjustment**. That is why we suggested those explanations in the Discussion. Here are the relevant fragments from the Results section:
+
+> Counter to our hypothesis, we found that greater total joint involvement was negatively associated with emotional adjustment. Thus, the children in families with highly involved parents generally displayed poorer emotional adjustment.
+
+And:
+
+> Finally, our hypothesis that children's emotional adjustment would be poorer in families where mothers were relatively more involved than fathers was supported.
+
+\Done
 
 # References
 
