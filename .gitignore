@@ -9,3 +9,12 @@
 *.log
 /invariance/*.dmg
 /invariance/*.dat
+*.pdf
+*.docx
+*.tex
+*.dat
+*.ttt
+*.RData
+*.dgm
+test.rmd
+test_table.rmd

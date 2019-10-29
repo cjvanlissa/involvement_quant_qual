@@ -51,3 +51,20 @@ reg_table <- function(x, ...){
   tab <- gsub("^(.+?) & NA & NA & NA & NA & NA & NA & NA & NA\\\\\\\\$", "\\\\multicolumn\\{9\\}\\{l\\}\\{\\1\\}\\\\\\\\", tab)
   cat(tab, sep = "\n")
 }
+
+
+reg_table_html <- function(x, ...){
+  rownames(x) <- NULL
+  names(x) <- gsub("^.+est_sig$", "Est.", names(x))
+  names(x) <- gsub("^.+confint$", "95\\% HPDI", names(x))
+  multiline_rows <- rowSums(is.na(x)) == 8
+  multiline_text <- x[multiline_rows, 1]
+  x[multiline_rows, 1] <- ""
+  x[is.na(x)] <- ""
+  tab <- capture.output(apa_table(x, format = "html", 
+                                   ...))
+  browser()
+  div_line <- grep("^-[ -]+$", tab)
+  tab[which(multiline_rows)+div_line] <- sprintf(paste0("%-", nchar(tab[which(multiline_rows)[1]+div_line]), "s"), multiline_text)
+  cat(tab, sep = "\n")
+}

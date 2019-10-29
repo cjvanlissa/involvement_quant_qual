@@ -1,0 +1,182 @@
+TITLE: Your title goes here
+DATA: FILE = "involvement_c87421d75a8c180d53e19e6cd9c50448.dat";
+VARIABLE: 
+NAMES = family sex time Man Fan Mco Fco Min Fin Mre Fre Mwa Fwa emo; 
+MISSING=.;
+
+USEVARIABLES =
+Mwa Fwa emo Min Fin male;
+ 
+CLUSTER = family;
+BETWEEN = Min Fin male;
+LAGGED = Mwa(1) Fwa(1) emo(1);
+TINTERVAL = time(1);
+
+DEFINE:
+male = sex; 
+if sex == 2 then male = -1; 
+
+ANALYSIS: 
+TYPE = TWOLEVEL RANDOM;
+ESTIMATOR = BAYES;
+PROCESSORS = 2;
+!BITERATIONS = (2000); 
+FBITERATIONS = 100;
+
+MODEL: 
+%WITHIN% 
+sMwaMwa | Mwa ON Mwa&1; 
+sFwaFwa | Fwa ON Fwa&1; 
+semoemo | emo ON emo&1; 
+
+semoMwa | emo ON Mwa&1; 
+semoFwa | emo ON Fwa&1; 
+
+sMwaemo | Mwa ON emo&1; 
+sFwaemo | Fwa ON emo&1; 
+
+%BETWEEN% 
+mean BY Min@1;
+mean BY Fin@1;
+mean*;
+[mean*];
+
+diff BY Min@1;
+diff BY Fin@-1;
+diff*;
+[diff*];
+
+Min@0;
+Fin@0;
+[Min@0];
+[Fin@0];
+
+Mwa ON male;
+Fwa ON male;
+emo ON male;
+
+semoMwa ON male;
+semoFwa ON male;
+
+sMwaemo ON male;
+sFwaemo ON male;
+
+Mwa ON mean;
+Fwa ON mean;
+emo ON mean;
+
+semoMwa ON mean;
+semoFwa ON mean;
+
+sMwaemo ON mean;
+sFwaemo ON mean;
+
+Mwa ON diff;
+Fwa ON diff;
+emo ON diff;
+
+semoMwa ON diff;
+semoFwa ON diff;
+
+sMwaemo ON diff;
+sFwaemo ON diff;
+
+!Within 
+!Variances
+Mwa (vMwa);
+Fwa (vFwa);
+emo (vemo);
+!Correlations
+Mwa WITH Fwa (MwaWFwa);
+Mwa WITH emo (MwaWemo);
+Fwa WITH emo (FwaWemo);
+
+!Between
+!Variances
+sMwaMwa (vsMwaMwa);
+sFwaFwa (vsFwaFwa);
+semoemo (vsemoemo);
+semoMwa (vsemoMwa);
+semoFwa (vsemoFwa);
+sMwaemo (vsMwaemo);
+sFwaemo (vsFwaemo);
+
+! Correlations
+sMwaMwa WITH sFwaFwa (sMwaMwaWsFwaFwa);
+sMwaMwa WITH semoemo (sMwaMwaWsemoemo);
+sMwaMwa WITH semoMwa (sMwaMwaWsemoMwa);
+sMwaMwa WITH semoFwa (sMwaMwaWsemoFwa);
+sMwaMwa WITH sMwaemo (sMwaMwaWsMwaemo);
+sMwaMwa WITH sFwaemo (sMwaMwaWsFwaemo);
+sFwaFwa WITH semoemo (sFwaFwaWsemoemo);
+sFwaFwa WITH semoMwa (sFwaFwaWsemoMwa);
+sFwaFwa WITH semoFwa (sFwaFwaWsemoFwa);
+sFwaFwa WITH sMwaemo (sFwaFwaWsMwaemo);
+sFwaFwa WITH sFwaemo (sFwaFwaWsFwaemo);
+semoemo WITH semoMwa (semoemoWsemoMwa);
+semoemo WITH semoFwa (semoemoWsemoFwa);
+semoemo WITH sMwaemo (semoemoWsMwaemo);
+semoemo WITH sFwaemo (semoemoWsFwaemo);
+semoMwa WITH semoFwa (semoMwaWsemoFwa);
+semoMwa WITH sMwaemo (semoMwaWsMwaemo);
+semoMwa WITH sFwaemo (semoMwaWsFwaemo);
+semoFwa WITH sMwaemo (semoFwaWsMwaemo);
+semoFwa WITH sFwaemo (semoFwaWsFwaemo);
+sMwaemo WITH sFwaemo (sMwaemoWsFwaemo);
+
+
+mean WITH diff;
+
+
+MODEL PRIORS:
+!IW(location, df)
+!a) with increasing df (second argument), the prior is stronger (given more weight relative to data). 
+!b) the mode is the first argument divided by df+p+1, where p is the number of variables. 
+!Within 
+!Variances
+vMwa~iw(1,6); 
+vFwa~iw(1,6); 
+vemo~iw(1,6); 
+!Correlations
+MwaWFwa~iw(0,6); 
+MwaWemo~iw(0,6); 
+FwaWemo~iw(0,6); 
+
+!Between
+!Variances
+vsMwaMwa~IW(1, 28);
+vsFwaFwa~IW(1, 28);
+vsemoemo~IW(1, 28);
+vsemoMwa~IW(1, 28);
+vsemoFwa~IW(1, 28);
+vsMwaemo~IW(1, 28);
+vsFwaemo~IW(1, 28);
+
+! Correlations
+sMwaMwaWsFwaFwa~IW(0, 28);
+sMwaMwaWsemoemo~IW(0, 28);
+sMwaMwaWsemoMwa~IW(0, 28);
+sMwaMwaWsemoFwa~IW(0, 28);
+sMwaMwaWsMwaemo~IW(0, 28);
+sMwaMwaWsFwaemo~IW(0, 28);
+sFwaFwaWsemoemo~IW(0, 28);
+sFwaFwaWsemoMwa~IW(0, 28);
+sFwaFwaWsemoFwa~IW(0, 28);
+sFwaFwaWsMwaemo~IW(0, 28);
+sFwaFwaWsFwaemo~IW(0, 28);
+semoemoWsemoMwa~IW(0, 28);
+semoemoWsemoFwa~IW(0, 28);
+semoemoWsMwaemo~IW(0, 28);
+semoemoWsFwaemo~IW(0, 28);
+semoMwaWsemoFwa~IW(0, 28);
+semoMwaWsMwaemo~IW(0, 28);
+semoMwaWsFwaemo~IW(0, 28);
+semoFwaWsMwaemo~IW(0, 28);
+semoFwaWsFwaemo~IW(0, 28);
+sMwaemoWsFwaemo~IW(0, 28);
+
+OUTPUT: TECH1 TECH8 STANDARDIZED (CLUSTER) CINT(HPD);
+SAVEDATA: 
+BPARAMETERS = 21-08-17_wa_emo_mean_diff_bpar.dat;
+
+PLOT: TYPE = PLOT3;
