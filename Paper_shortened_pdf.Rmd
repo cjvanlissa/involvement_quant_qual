@@ -154,7 +154,7 @@ Our target sample consisted of 1884 native `r masked("Australian")`, non-minorit
 
 ### Qualitative involvement.
 
-Responsiveness and inductive reasoning were measured using the warmth (e.g., "How often do you express affection by hugging, kissing and holding this child?") and inductive reasoning (e.g., "Talk it over and reason with this child when he/she misbehaved?") subscales of the Child Rearing Questionnaire [CRQ, @patersonAssociationBehaviouralAdjustment2001]. Structure and negative parenting were measured using the consistency and anger scales developed by the Canadian National Longitudinal Survey of Children and Youth [NLSCY; @statisticscanadaNationalLongitudinalSurvey2000]. These self-report instruments used five-point scales, ranging from "never or almost never" to "always or almost always".
+Responsiveness and inductive reasoning were measured using the warmth (e.g., "How often do you express affection by hugging, kissing and holding this child?") and inductive reasoning (e.g., "Talk it over and reason with this child when he/she misbehaved?") subscales of the Child Rearing Questionnaire [CRQ, @patersonAssociationBehaviouralAdjustment2001]. Structure and negative parenting were measured using the consistency (e.g., "How often is this child able to get out of punishment when he/she really sets his/her mind to it?", reverse coded) and anger (e.g., "How often are you angry when you punish this child?") scales developed by the Canadian National Longitudinal Survey of Children and Youth [NLSCY; @statisticscanadaNationalLongitudinalSurvey2000]. These self-report instruments used five-point scales, ranging from "never or almost never" to "always or almost always".
 
 ### Quantitative involvement.
 
