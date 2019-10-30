@@ -46,10 +46,18 @@ reg_table <- function(x, ...){
   rownames(x) <- NULL
   names(x) <- gsub("^.+est_sig$", "Est.", names(x))
   names(x) <- gsub("^.+confint$", "95\\% HPDI", names(x))
-  tab <- capture.output(apa_table(x, format = "latex", 
-                                  col_spanners = colspan_fun(x, skip = 1), ...))
-  tab <- gsub("^(.+?) & NA & NA & NA & NA & NA & NA & NA & NA\\\\\\\\$", "\\\\multicolumn\\{9\\}\\{l\\}\\{\\1\\}\\\\\\\\", tab)
-  cat(tab, sep = "\n")
+  tab <- apa_table(x, format = "latex", col_spanners = colspan_fun(x, skip = 1), ...)
+  tab <- gsub('(^"|"$)', '', tab)
+  tab <- gsub("^\\[1\\] ", "", tab)
+  
+  tab <- gsub("\\n(.+?) & NA & NA & NA & NA & NA & NA & NA & NA\\\\\\\\\\n", "\\\\multicolumn\\{9\\}\\{l\\}\\{\\1\\}\\\\\\\\", tab, perl = TRUE)
+  #tab <- gsub("\\\\", "\\", tab)
+  #tab <- gsub("\\\\begin", "\\begin", tab)
+  #tab <- gsub("\\\\n(?!=orm)", "\\\\", tab, perl = TRUE)
+  #tab <- gsub("%", "\\%", tab)
+  #cat(tab, sep = "\n")
+  #knitr::raw_latex(tab)
+  tab
 }
 
 
@@ -62,7 +70,7 @@ reg_table_html <- function(x, ...){
   x[multiline_rows, 1] <- ""
   x[is.na(x)] <- ""
   tab <- capture.output(apa_table(x, format = "html", 
-                                   ...))
+                                   ...)[1])
   browser()
   div_line <- grep("^-[ -]+$", tab)
   tab[which(multiline_rows)+div_line] <- sprintf(paste0("%-", nchar(tab[which(multiline_rows)[1]+div_line]), "s"), multiline_text)
