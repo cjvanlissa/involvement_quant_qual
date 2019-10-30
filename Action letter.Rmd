@@ -13,7 +13,15 @@ output      : papaja::revision_letter_pdf
 editor = c("Dr.", "Sara", "Jaffee")
 journal = "Developmental Psychology"
 title = "Quantitative involvement moderates longitudinal associations between mothers' and fathers' qualitative parenting and children's emotional adjustment"
+mask <- FALSE
+masked <- function(text){
+  ifelse(mask, "[masked]", text)
+}
 ```
+
+\subsection*{EDITOR'S NOTE: Please make sure your revision is concise. Our guidelines for length of manuscripts are 35 pages inclusive of everything except tables and figures. Because your manuscript reports on a longitudinal study, we could allow a few extra pages, but please keep close to this guideline.}
+
+\subsection*{NOTE FROM EDITORIAL OFFICE:  We ask that you upload either Word or RTF versions of both your title page and manuscript,  rather than PDFs, when resubmitting.}
 
 Dear Dr. `r editor[3]`,
 
@@ -28,129 +36,210 @@ Treatment of participants was in accordance with the APA ethical principles. On 
 Yours sincerely,
 Caspar van Lissa
 
-# Editor comments
+\section*{Editor comments}
 
-\rc{Introduction
+\RC{Introduction
 
 The organization of the Introduction is very difficult to follow. I think it's fine to start with a description of emotional adjustment and to explain that the quality of the parent-child relationship is associated with children's emotional adjustment, but then I think you need to revise the text dramatically. Readers want to know (1) what is already known about the association between the parent-child relationship and children's adjustment? (2) what is not known about the association between the parent-child relationship and children's adjustment? (3) how will your study fill that gap in knowledge?}
 
-
-2. Method
-2a. Both reviewers found it hard to evaluate the findings without additional information about the sample, including how representative it is, how missing data were handled, and how much attrition there was across waves of the study. It is possible that reviewers and I have misinterpreted a sentence in the Discussion section in which you mention two longitudinal studies across two continents. At least one of the reviewers understood this to mean that your study involves samples from two continents, so please clarify if this is not the case.
-2b. I was confused as to how joint and relative quantitative involvement were defined. Is joint quantitative involvement the total amount of time mothers or fathers spend caring for children and relative involvement the ratio of one parent's involvement to both parents' involvement? Please also use consistent language throughout. In the Results section, you describe total and relative involvement, but in the Intro and Discussion, you describe total joint care and the childcare distribution. 
-3. Results
-3a. Although I suspect a growing number of Developmental Psychology readers are aware of statistical advances on the standard cross-lagged model, many of them probably have not estimated those models. You would help readers understand your findings by presenting and explaining a conceptual figure of the statistical model. That way, readers might be better able to visualize it when you describe various random intercepts or bidirectional effects.
-3b. More extensive table notes would also be helpful. These could be used to remind readers of how some of the constructs are defined (e.g., joint and relative quantitative involvement).
-3c. You could educate readers by helping them interpret the values in the tables. You do this nicely in some places; for example, on p. 14 where you explain, "Thus, when children displayed better emotional adjustment than usual in one year, their mothers displayed more anger and inductive reasoning, but also more warmth, than usual in the next year." Even there, however, it's not clear what a value of .14 means in the association of quant. involvement on maternal warmth.  
-3d. The results section is very dense. You could make it less dense by articulating clear hypotheses at the end of the Introduction and then reporting whether those specific hypotheses were supported. As just one example, you state on p. 9, "Applying this insight from the coparenting literature, we might thus expect parents’ quantitative involvement to be directly associated with their qualitative parenting behaviors and children’s emotional adjustment, and to moderate effects between qualitative parenting behaviors and emotional adjustment." This is not a directional hypothesis, as stated. It would be helpful if you could be more specific. Are you predicting that the more time mothers and fathers spend caring for children, the more warm, consistent, etc. their parenting will be? Do you expect this to be equally true for mothers and fathers? How do you expect the quantitative measure of parenting to moderate the association between qualitative measures and children's emotional adjustment? 
-4. Discussion
-4a. The Discussion, as it is currently written, raises a number of issues that are not necessarily anticipated in the Introduction. For example, the Introduction would lead me to think that your analyses would focus primarily on how patterns of association between dimensions of parenting and children's adjustment differ for fathers versus mothers. The first several paragraphs of your discussion, however, focus on how patterns of results differ across parenting dimensions (e.g., results for inconsistent parenting are different from results for parental warmth). I understand that the data show these differences, but the presentation of the results and discussion would be more streamlined if you focused on those that were directly relevant to your hypothesis.  
-4b. There are a number of issues you raise in the Discussion that don't have a parallel in the Introduction. Thus, I think readers are not well prepared to understand the significance of those analyses or findings. For example, you make special note of it when results are observed at the within-family, but not the between-family level (e.g., mother vs. father differences) or when they are observed at the between-family, but not within-family level (e.g., some of the parenting dimension-emotional adjustment associations). Because you haven't really explained clearly when you expect to see between-family effects and when you expect to see within-family effects, I think the significance of much of the discussion will be lost on readers. 
-4c. I have two comments about your discussion of child effects (p. 23). First, although you note that you are measuring the parent-child dyad early in development, the children in your sample are already 6 years old when they are first assessed and they are 12 by the last measurement occasion. Although there is no question in my mind that child effects are present from the earliest stages in development, I think the likelihood of observing parenting effects is greater at still younger ages (e.g., infancy and toddlerhood). Second, there are pronounced individual differences in how parents react to children. The same level of emotionally dysregulated behavior might elicit anger from one parent and inductive reasoning from another. There is a great deal of evidence from parenting interventions that how parents react to difficult behavior affects whether their children remain noncompliant and dysregulated or whether their behavior improves. So I think you're selling parents short if your claim is that the only way they influence their children is through the changing expression of the genes they have bequeathed them.   
-So, we encourage you to submit a revision. To do so, please go to https://www.editorialmanager.com/dvl/ and log in as an Author. You will see a menu item called "Submissions Needing Revision". You will find your submission record there. Please resubmit within 30 days. If you need more time to complete additional analyses, this time period is negotiable, but let us know beforehand. Please include an 'Authors Response to Reviewers' with your revision that includes details on how you addressed the various issues that I highlighted above, as well as the other issues raised by the reviewers. I will return the revision to the original reviewers for additional comments .
-
-Thank you for considering Developmental Psychology as an outlet for your work.
-
-
-\RC{
-
-}
-This is a reviewer comment
-
-This is our response
-
-\Assignment{First Author}
 \WorkInProgress
-\Easy
 
+\RC{Both reviewers found it hard to evaluate the findings without additional information about the sample, including how representative it is, how missing data were handled, and how much attrition there was across waves of the study.}
 
-\RC{This is the first paragraph of a long reviewer comment
+We have addressed each of these issues in our detailed responses to the Reviewers below. Here, we provide an overview of changes made:
 
-This is the second paragraph}
+1. We have unmasked all sections in the revised manuscript that describe the sample, so the Reviewers can assess its quality and generalizability.
+2. Bayesian estimation handles missing data intrinsically, in a similar way to FIML. We have explained this in the revised manuscript and in this letter.
+3. Attrition is minor, and is covered in Supplementary Table S1. In the revised manuscript, we now explicitly refer to all information covered in S1 (scale descriptive statistics, number of items, number of complete cases, and reliability).
 
-This is our response.
-
-> This is a section quoted from the revised manuscript to illustrate the change.
-
-\Assignment{Second Author}
-\AlmostDone
-\Medium
-
-
-\RC
-This is a reviewer comment
-
-This is our response
-
-\Assignment{First Author}
 \Done
-\TimeConsuming
-\Hard
-\NotEstimated
 
-### Actual comments
+\RC{It is possible that reviewers and I have misinterpreted a sentence in the Discussion section in which you mention two longitudinal studies across two continents. At least one of the reviewers understood this to mean that your study involves samples from two continents, so please clarify if this is not the case.}
 
-Dear Dr. van Lissa,
+This is indeed a misunderstanding, and we apologize for the lack of clarity. Please see our response to Reviewer 2, comment 8.
 
-Thank you very much for submitting your manuscript "Quantitative involvement moderates longitudinal associations between mothers’ and fathers’ qualitative parenting and children’s emotional adjustment" for review and consideration for publication in Developmental Psychology. I sincerely appreciate the opportunity to review the manuscript. I have now received two reviews of the manuscript, and I have read the manuscript carefully myself. The reviews are appended to this email. As you will note, the reviewers agreed that your manuscript pertains to topics of importance—(1) how mothers and fathers influence their children's emotional adjustment and (2) the interplay between how much time and how parents spend caring for children. The strengths of the study include the sophisticated methodological approach, the inclusion of mothers and fathers, and the effort to include quantitative and qualitative measures of parenting. However, at the same time, the reviewers also identified a number of significant conceptual problems with the manuscript. Thus, I cannot accept the manuscript for publication in its present form. However, the reviewers and I agree that these issues could be adequately addressed in a revision. I encourage you therefore to revise and resubmit the manuscript. Although I believe you will find the reviewers' comments clear, it may be useful for me to summarize the major points made in the reviews.
+\Done
 
+\RC{2b. I was confused as to how joint and relative quantitative involvement were defined. Is joint quantitative involvement the total amount of time mothers or fathers spend caring for children and relative involvement the ratio of one parent's involvement to both parents' involvement? Please also use consistent language throughout. In the Results section, you describe total and relative involvement, but in the Intro and Discussion, you describe total joint care and the childcare distribution.}
 
-## EDITOR'S NOTE: Please make sure your revision is concise. Our guidelines for length of manuscripts are 35 pages inclusive of everything except tables and figures. Because your manuscript reports on a longitudinal study, we could allow a few extra pages, but please keep close to this guideline.
+We thank the Editor for pointing out the lack of consistency across sections, and we have edited the revised manuscript to resolve this issue. We now consistently use the terms "joint and relative quantitative involvement". Joint quantitative involvement is defined as the average involvement of two parents. Relative involvement is defined as the difference between mothers and fathers (not a ratio). These variables are obtained by re-expressing the variance of the two observed variables, absolute maternal and paternal involvement, into two latent variables, reflecting the mean difference. We have included a visual representation of the model, which should clarify this technique.
 
-## NOTE FROM EDITORIAL OFFICE:  We ask that you upload either Word or RTF versions of both your title page and manuscript,  rather than PDFs, when resubmitting.
- 
-Reviewers' comments:
+\WorkInProgress
 
-Reviewer 1: This manuscript addresses an important research area: understanding the role of mothers and fathers in the emotional adjustment of children.  Strengths of this paper include (a) the inclusion of quantitative and qualitative measures of parenting from both parents, (b) a within- and between-person design, and (c) a longitudinal study with repeated measures of children and parenting. Below, I describe my suggestions to improve the manuscript as currently written.
+\RC{3a. Although I suspect a growing number of Developmental Psychology readers are aware of statistical advances on the standard cross-lagged model, many of them probably have not estimated those models. You would help readers understand your findings by presenting and explaining a conceptual figure of the statistical model. That way, readers might be better able to visualize it when you describe various random intercepts or bidirectional effects.}
 
-Introduction
+We appreciate the suggestion, and have incorporated such a figure. 
 
-The first paragraph of the introduction introduces many different ideas and comes across as disjointed. Revision should make it clear to readers that the focus is on emotional adjustment among children (as well as the specific developmental age of focus), describe a more complex, well-cited definition of emotional adjustment (the current citation and definition does not seem accurate), introduce the idea that mothers and fathers may plan a unique role in the development of emotional adjustment, before focusing in on the role of fathers. Finally, it would help the reader to provide the research goals in the first 1-2 pages of the introduction to get a sense where the paper is headed.
+\WorkInProgress
 
-The authors make the argument that developmental psychology has emphasized qualitative parenting behaviors whereas sociology and gender studies have focused on involvement quantity. The authors need to defend this point with more citations and nuance, but more broadly, perhaps the focus should move away from disciplinary differences in order to explain and justify why including both types of measures is important. It's seems this later idea is what the authors are intending to put forward to the reader but it gets lost a bit when describing disciplinary differences that do not seem precise.
+\RC{3b. More extensive table notes would also be helpful. These could be used to remind readers of how some of the constructs are defined (e.g., joint and relative quantitative involvement).}
 
-The remaining introduction is thorough in its review, but needs more synthesis and direction for the reader. Providing the research goals toward the beginning of the introduction and then carefully walking the reader through the relevant existing literature may help to do this.
+\WorkInProgress
 
-While the possibility of sex differences is brought up in the introduction, it is not brought forth in the research questions so it is unclear if the authors are going to investigate it, despite their justification for doing so.
+\RC{3c. You could educate readers by helping them interpret the values in the tables. You do this nicely in some places; for example, on p. 14 where you explain, "Thus, when children displayed better emotional adjustment than usual in one year, their mothers displayed more anger and inductive reasoning, but also more warmth, than usual in the next year." Even there, however, it's not clear what a value of .14 means in the association of quant. involvement on maternal warmth.}
 
-Finally, hypotheses based upon the existing literature and theory would be useful in the introduction.
+\WorkInProgress
 
-Methods
-The annual income of the parents seems quite low, and the decision to focus only on non-minority families raises questions, however perhaps this is due to my lack of knowledge of the context in which this study is placed. It would be helpful to specify the geographic area of the study to provide some context. Similarly, more information on the sample is needed to understand how these results may or may not generalize to broader populations.
+\RC{3d. The results section is very dense. You could make it less dense by articulating clear hypotheses at the end of the Introduction and then reporting whether those specific hypotheses were supported. As just one example, you state on p. 9, "Applying this insight from the coparenting literature, we might thus expect parents’ quantitative involvement to be directly associated with their qualitative parenting behaviors and children’s emotional adjustment, and to moderate effects between qualitative parenting behaviors and emotional adjustment." This is not a directional hypothesis, as stated. It would be helpful if you could be more specific. Are you predicting that the more time mothers and fathers spend caring for children, the more warm, consistent, etc. their parenting will be? Do you expect this to be equally true for mothers and fathers? How do you expect the quantitative measure of parenting to moderate the association between qualitative measures and children's emotional adjustment? }
 
-More information on all of the scales should be provided. Specifically, the number of items in each scale, reliability statistics, any information on external validity, and the reporter. It was unclear to me that the measure of emotional adjustment was teacher reported until the limitations section.
+\WorkInProgress
 
-There is also more information needed on study recruitment, who were the participants, when each round of data collection took place, how the assessments were completed, ect.
+\RC{4a. The Discussion, as it is currently written, raises a number of issues that are not necessarily anticipated in the Introduction. For example, the Introduction would lead me to think that your analyses would focus primarily on how patterns of association between dimensions of parenting and children's adjustment differ for fathers versus mothers. The first several paragraphs of your discussion, however, focus on how patterns of results differ across parenting dimensions (e.g., results for inconsistent parenting are different from results for parental warmth). I understand that the data show these differences, but the presentation of the results and discussion would be more streamlined if you focused on those that were directly relevant to your hypothesis.}
 
-Relatedly, how did the authors handle missing data across the study waves?
+\WorkInProgress
+
+\RC{4b. There are a number of issues you raise in the Discussion that don't have a parallel in the Introduction. Thus, I think readers are not well prepared to understand the significance of those analyses or findings. For example, you make special note of it when results are observed at the within-family, but not the between-family level (e.g., mother vs. father differences) or when they are observed at the between-family, but not within-family level (e.g., some of the parenting dimension-emotional adjustment associations). Because you haven't really explained clearly when you expect to see between-family effects and when you expect to see within-family effects, I think the significance of much of the discussion will be lost on readers.}
+
+\WorkInProgress
+
+\RC{4c. I have two comments about your discussion of child effects (p. 23). First, although you note that you are measuring the parent-child dyad early in development, the children in your sample are already 6 years old when they are first assessed and they are 12 by the last measurement occasion. Although there is no question in my mind that child effects are present from the earliest stages in development, I think the likelihood of observing parenting effects is greater at still younger ages (e.g., infancy and toddlerhood).}
+
+\WorkInProgress
+
+\RC{Second, there are pronounced individual differences in how parents react to children. The same level of emotionally dysregulated behavior might elicit anger from one parent and inductive reasoning from another. There is a great deal of evidence from parenting interventions that how parents react to difficult behavior affects whether their children remain noncompliant and dysregulated or whether their behavior improves. So I think you're selling parents short if your claim is that the only way they influence their children is through the changing expression of the genes they have bequeathed them.}
+
+\WorkInProgress
+
+# Reviewer 1:
+
+\RC{This manuscript addresses an important research area: understanding the role of mothers and fathers in the emotional adjustment of children.  Strengths of this paper include (a) the inclusion of quantitative and qualitative measures of parenting from both parents, (b) a within- and between-person design, and (c) a longitudinal study with repeated measures of children and parenting. Below, I describe my suggestions to improve the manuscript as currently written.}
+
+We thank the Reviewer for their time, and for the helpful suggestions. We have attempted to address them thoroughly and in good faith.
+
+\RC{The first paragraph of the introduction introduces many different ideas and comes across as disjointed. Revision should make it clear to readers that the focus is on emotional adjustment among children (as well as the specific developmental age of focus), describe a more complex, well-cited definition of emotional adjustment (the current citation and definition does not seem accurate), introduce the idea that mothers and fathers may plan a unique role in the development of emotional adjustment, before focusing in on the role of fathers. Finally, it would help the reader to provide the research goals in the first 1-2 pages of the introduction to get a sense where the paper is headed.}
+
+\WorkInProgress
+
+\RC{The authors make the argument that developmental psychology has emphasized qualitative parenting behaviors whereas sociology and gender studies have focused on involvement quantity. The authors need to defend this point with more citations and nuance, but more broadly, perhaps the focus should move away from disciplinary differences in order to explain and justify why including both types of measures is important. It's seems this later idea is what the authors are intending to put forward to the reader but it gets lost a bit when describing disciplinary differences that do not seem precise.}
+
+\WorkInProgress
+
+\RC{The remaining introduction is thorough in its review, but needs more synthesis and direction for the reader. Providing the research goals toward the beginning of the introduction and then carefully walking the reader through the relevant existing literature may help to do this.}
+
+\WorkInProgress
+
+\RC{While the possibility of sex differences is brought up in the introduction, it is not brought forth in the research questions so it is unclear if the authors are going to investigate it, despite their justification for doing so.}
+
+\WorkInProgress
+
+\RC{Finally, hypotheses based upon the existing literature and theory would be useful in the introduction.}
+
+We agree wholeheartedly with this point, but there is a challenge: Because nobody has previously modeled the interplay between parental involvement and emotional adjustment in the way we have, controlling for stable between-family differences, and examining quantitative involvement in terms of the joint and relative contribution of mothers and fathers, there is no precedent upon which to base such hypotheses. Therefore, the best we can do is to present *conceptual* hypotheses. 
+
+\WorkInProgress
+
+\RC{The annual income of the parents seems quite low, and the decision to focus only on non-minority families raises questions, however perhaps this is due to my lack of knowledge of the context in which this study is placed. It would be helpful to specify the geographic area of the study to provide some context. Similarly, more information on the sample is needed to understand how these results may or may not generalize to broader populations.}
+
+To facilitate evaluation of the sample, we have un-masked this information in the Revision. 
+
+Median household income in Australia was $\$58708$ in 2006, the first year of data collection. We only have information on income categories, but in our sample, most families were dual earners, with most fathers reporting between \$26,000-\$51,999, and most mothers reporting \$25,999 of income. This seems to be very comfortably around the median income in Australia at the time. That makes sense, because the study contains a representative sample. We did decide to focus only on white urbanized Australians, because the amount of heterogeneity introduced by including rural and nonwhite/aboriginal Australians led to model non-convergence.
+
+\WorkInProgress
+
+\RC{More information on all of the scales should be provided. Specifically, the number of items in each scale, reliability statistics...}
+
+All of this information requested is provided Supplementary Table 1, as stated in the text (*Scale descriptive statistics are provided in Supplementary Table 1*). Perhaps these supplementary Tables are not automatically shared with reviewers? 
+
+To address this comment, we've clarified this sentence in the manuscript, which now reads: *Scale descriptive statistics, number of items, number of complete cases, and reliability are reported in Supplementary Table 1*. We also reproduce Table S1 here, in case the Reviewer does not have access:
+
+```{r, echo = FALSE, results = 'asis'}
+library(knitr)
+library(kableExtra)
+kable(read.csv("Supplementary.Table.1.item.descriptives.csv"), booktabs = TRUE) %>%
+  kable_styling(font_size = 8)
+```
+
+\Done
+
+\RC{...any information on external validity...}
+
+We have followed the convention of 1) providing example items as an indication of face validity, and 2) citing the scale validation papers for more information on predictive validity. We would like to defer to the Editor as to whether further actions need to be taken (we are also not sure what these actions would be).
+
+\Done
+
+\RC{...and the reporter. It was unclear to me that the measure of emotional adjustment was teacher reported until the limitations section.}
+
+This information is provided in the Measures section, as it should be:
+
+> Emotional adjustment was measured using the reverse-coded emotional distress subscale of the __teacher-reported__ Strengths and Difficulties Questionnaire
+
+\Done
+
+\RC{There is also more information needed on study recruitment, who were the participants, when each round of data collection took place, how the assessments were completed, ect.}
+
+Several working papers have been written on the recruitment, participants, data collection, etc. for this sample. However, this information was masked in the original manuscript, to facilitate blind peer review. We feel that it is unnecessary to reproduce this information for a well-documented large cohort study, as we can simply cite the original material. However, as we also understand that the Reviewer needs access to these references to evaluate the study quality, we have now revealed the masked sections:
+
+> Complete details regarding the study design, sample, and procedure are available online at `r masked("http://data.growingupinaustralia.gov.au/")`.
+
+\Done
+
+\RC{Relatedly, how did the authors handle missing data across the study waves?}
+
+One property of the Bayesian estimation algorithm used, is that it intrinsically handles missing values without the need to impute them. It is comparable in that sense to full-information maximum likelihood estimation. Under the assumption of MAR, this produces consistent estimates. We have now clarified this in the revised manuscript by including the following sentence in the Strategy of Analyses:
+
+> Bayes is a full-information estimator, which means that all available information is used without imputing missing values, and consistent estimation is guaranteed under the assumption that data are missing at random. 
+
+\Done
 
 Results
 
-Please include effect sizes when describing the results. What are the values in the tables? Please include this in a table note and describe in the text.
+\RC{Please include effect sizes when describing the results.}
 
-How were sex differences tested in the analytic models?
+All of our results are reported in terms of correlations (which, when squared, gives the proportion of explained variance shared by two variables) and standardized regression coefficients (a one SD increase in X predicts a $\beta$ SD increase in Y, conditional on the other predictors), both of which are already effect sizes [@nieminenStandardisedRegressionCoefficient2013].
 
-Showing the results in the form of figures and tables would be very helpful for readers.
+\RC{What are the values in the tables? Please include this in a table note and describe in the text.}
 
-When the authors describe effects as being larger for fathers in comparison to mothers, did they test this statistically?
+\RC{How were sex differences tested in the analytic models?}
 
-Discussion
+This is explained in the strategy of analyses:
 
-I am unsure of the context of this study, but there seem to be issues in terms of the representativeness of the sample and therefore these issues should be references in the limitations section.
+> Between-family differences in the interplay between qualitative parenting behaviors and emotional adjustment are estimated as random effects, and we can include between-family level moderators as predictors of these random effects. In this way, we included total joint childcare, the childcare distribution, __and child sex__ as moderators.
 
-Minor points:
-* In the first sentence of the abstract, I believe it should be "The question of whether…" rather than "The question whether…"
-* Extra spaces between paragraphs should be removed
-* Miss spelling on page 12: agerage
+\RC{Showing the results in the form of figures and tables would be very helpful for readers.}
 
+We do currently show the results in the form of Tables, but we have also included conceptual Figures to further clarify the model.
 
+\WorkInProgress
 
+\RC{When the authors describe effects as being larger for fathers in comparison to mothers, did they test this statistically?}
 
-Reviewer 2: Dear Authors,
+We appreciate this suggestion! Strictly speaking, since Bayesian analyses focus on estimation rather than inference, it is correct to say that the (maximum a-posteriori) estimate is different between mothers and fathers, without further substantiation - because in the Bayesian framework, the maximum a-posteriori estimate can be interpreted as the most likely population value for the parameter, conditional on the data and prior. In practice, since we use Bayesian estimation for pragmatic reasons, we understand that there is added value in knowing the posterior distribution of the difference between mothers and fathers.
 
-Thank you for the opportunity to review this article. Overall I think it is an important study that makes contributions to the literature. However, I found it hard to follow most of the time with some inconsistencies that need to be addressed before it is published. The more substantial comments that highlight confusing sections and/or inconsistencies are bolded:
+Therefore, to address this comment, we have re-run all analyses to obtain the posterior for the differences between mothers and fathers. We have reported this information in-text whenever making a statement about mother/father differences, and have added it to the relevant Supplementary Tables with the full model parameters. We have omitted it from the smaller Tables in the manuscript, because their function is to help make it easier for readers to digest the results, and we feel that adding four columns with difference tests would interfere with that goal. 
 
-\rc{1. The opening paragraph does not convince me that fathers may uniquely contribute to children's emotional adjustment. I can see the argument that fathers may stimulate emotion by encouraging children outside of their comfort zones, but warmth and security (what the authors argue mothers do more of) should also make emotion safe and commonplace.}
+\WorkInProgress
+
+\RC{Discussion: I am unsure of the context of this study, but there seem to be issues in terms of the representativeness of the sample and therefore these issues should be references in the limitations section.}
+
+\WorkInProgress
+
+\RC{Minor points:
+* In the first sentence of the abstract, I believe it should be "The question of whether…" rather than "The question whether…"}
+
+We appreciate the correction.
+
+\Done
+
+\RC{* Extra spaces between paragraphs should be removed}
+
+\WorkInProgress
+
+\RC{* Miss spelling on page 12: agerage}
+
+We appreciate the correction. To address this typo, and other spelling errors, we have checked the manuscript with the R-package `hunspell` and fixed about 10 other errors.
+
+\Done
+
+# Reviewer 2:
+
+\RC{Dear Authors, Thank you for the opportunity to review this article. Overall I think it is an important study that makes contributions to the literature.}
+
+Thank you sincerely for the time you have spent reviewing this manuscript, and for your kind words about its potential contribution. Your comments were very helpful in improving the quality of the manuscript, and we have attempted to address all of them in good faith, as detailed below.
+
+Sincerely,
+the authors
+
+\RC{1. The opening paragraph does not convince me that fathers may uniquely contribute to children's emotional adjustment. I can see the argument that fathers may stimulate emotion by encouraging children outside of their comfort zones, but warmth and security (what the authors argue mothers do more of) should also make emotion safe and commonplace.}
 
 We completely agree with the Reviewer that warmth and security, provided by either parent, are positively related to emotional adjustment development. We discuss this in REFER TO PARAGRAPH. It appears that the Reviewer interpreted the word *uniquely* to mean that *only* fathers contribute to emotional adjustment. We intended to say that fathers contribute in a *different* way from mothers.   
 We merely intended to summarize fatherhood theory regarding the distinction between the attachment vs activation relationship: A widely endorsed theory that posits that demandingness is a more important socialization mechanism for fathers than for mothers, and that warmth is a more important socialization mechanism for mothers than for fathers. 
@@ -159,40 +248,46 @@ In the Revision, we have attempted to address the Reviewer's comment by disambig
 
 \AlmostDone
 
-\rc{2. I don't think "incursions" is the right word (line 65).}
+\RC{2. I don't think "incursions" is the right word (line 65).}
 
 We appreciate the correction; we meant to say *transgressions* and have corrected this in the Revision.
 
 \Done
 
-\rc{3. Please do not capitalize the word after a colon within a sentence. In general there are some grammatical problems throughout that should be addressed before publication. There are also some typos (e.g., line 236 "agerage instead of average").}
+\RC{3. Please do not capitalize the word after a colon within a sentence. In general there are some grammatical problems throughout that should be addressed before publication. There are also some typos (e.g., line 236 "agerage instead of average").}
 
 We have capitalized the word after a colon if it is the beginning of an independent clause, in line with the the sixth edition of the APA Publication Manual. We would generally to prefer to adhere to the Publication Manual in these matters, but we defer to the Editor as to whether further changes are required. To address this typo, and other spelling errors, we have checked the manuscript with the R-package `hunspell` and fixed about 10 other errors.
 
 \Done
 
-\rc{4. Can you say more about why parental anger is thought to undermine emotion regulation?}
+\RC{4. Can you say more about why parental anger is thought to undermine emotion regulation?}
 
+\WorkInProgress
 
-5. Why would emotional adjustment be negatively associated with consistency and inductive reasoning (line 105)? It doesn't follow to me that because maladjustment predicts less warmth, more demandingness, and more negative parenting that adjustment predicts more warmth and less demandingness. Shouldn't we expect to see demandingness, as you define it, along with other positive aspects of parenting? They are talked about as the more positive dimensions of demandingness that are not overly restrictive and applicable to children despite their emotional adjustment. This is also inconsistent with what you say your hypotheses are in the results section.
+\RC{5. Why would emotional adjustment be negatively associated with consistency and inductive reasoning (line 105)? It doesn't follow to me that because maladjustment predicts less warmth, more demandingness, and more negative parenting that adjustment predicts more warmth and less demandingness. Shouldn't we expect to see demandingness, as you define it, along with other positive aspects of parenting? They are talked about as the more positive dimensions of demandingness that are not overly restrictive and applicable to children despite their emotional adjustment. This is also inconsistent with what you say your hypotheses are in the results section.}
 
-6. It would be helpful in the background to specify when you're talking about child influences (e.g., label the section "sex differences" as "child sex differences")
+\WorkInProgress
 
-\rc{7. If you have income from ~1700 dads, why are you only reporting it for ~700?}
+\RC{6. It would be helpful in the background to specify when you're talking about child influences (e.g., label the section "sex differences" as "child sex differences")}
 
-We are reporting the modal income for fathers and mothers, which is the appropriate measure of central tendency for an ordinal variable. Of all fathers, 663 reported this modal value. Based on this Reviewer comment, we understand that the way we reported income was ambiguous. In the revision, we have attempted to clarify this section as follows:
+\WorkInProgress
 
-> Most families were dual-earner families, based on income from wages or enterprise ($N = 1067$); the remainder were single-earner families($N = 669$ father-only, $N = 41$ mother-only). The modal annual income for fathers was between \$26,000-\$51,999 ($N = 663$ fathers reported this value), and for mothers, \$25,999 or less per year ($N = 1152$ reported this value).
+\RC{7. If you have income from ~1700 dads, why are you only reporting it for ~700?}
 
-\rc{8. I understand the need to maintain a blind document, but with so much information about the sample removed it is very hard to interpret the results. I did not realize the sample spanned two continents/cultures until the discussion - there is no mention of potential site differences before that point, or a discussion of how parenting is the same or different in different cultures.}
+We believe that this comment might be due to a misunderstanding, that can be resolved by clearer writing on our part. We reported the modal income for fathers and mothers, which is the appropriate measure of central tendency for an ordinal variable (the LSAC recorded income in ordinal categories, with relatively little dispersion). Of all fathers, 663 reported this modal value. That is where the number ~700 comes from. In the revision, we have attempted to clarify this section as follows:
 
-There appears to be a misunderstanding here, engendered by a paragraph in the Discussion that relates our findings to the findings of a published study on a similar topic with a European adolescent sample. The published study found that child effects outnumbered parenting effects in adolescence, and speculated that this was due to the relative equality of parent-adolescent relationships. The present study also found a preponderance of child effects, at a younger age, which discredits this speculation. Thus, this is nothing more than a discussion point. We don't think that an extensive discussion of cultural differences is relevant (especially because the findings are similar).
+> Most families were dual-earner families, based on income from wages or enterprise ($N = 1067$); the remainder were single-earner families($N = 669$ father-only, $N = 41$ mother-only). Income was recorded in ordered categories. The modal annual income for fathers was between \$26,000-\$51,999 ($N = 663$ fathers reported this value), and for mothers, \$25,999 or less per year ($N = 1152$ reported this value).
+
+\Done
+
+\RC{8. I understand the need to maintain a blind document, but with so much information about the sample removed it is very hard to interpret the results. I did not realize the sample spanned two continents/cultures until the discussion - there is no mention of potential site differences before that point, or a discussion of how parenting is the same or different in different cultures.}
+
+We understand that all Reviewers and the Editor feel that the masked manuscript interferes with proper assessment of the sample. Therefore, we have decided to unmask the revised manuscript. With regard to the point about two continents: This appears to be a misunderstanding, engendered by a paragraph in the Discussion that relates our findings to the findings of a published study on a similar topic with a European adolescent sample. The published study found that child effects outnumbered parenting effects in adolescence, and speculated that this was due to the relative equality of parent-adolescent relationships. The present study also found a preponderance of child effects, at a younger age, which discredits that speculation. Thus, there are no two continents/cultures within the present study.
 
 To address this comment, we have made two changes in the revision:
 
 1. We have clarified this section in the discussion.
-2. We no longer mention the different continents. Although it is certainly relevant that these studies were conducted on different populations, that information is orthogonal to the point we are trying to make about different age ranges.
-3. We have removed masking of sample details.
+2. We have removed masking of sample details.
 
 The Discussion section in question now reads:
 
@@ -200,40 +295,56 @@ The Discussion section in question now reads:
 
 \Done
 
-\rc{9. Please provide examples of the structure and negative parenting items used.}
+\RC{9. Please provide examples of the structure and negative parenting items used.}
 
 As requested, we have added these examples:
 
 > Structure and negative parenting were measured using the consistency (e.g., "How often is this child able to get out of punishment when he/she really sets his/her mind to it?", reverse coded) and anger (e.g., "How often are you angry when you punish this child?") scales developed by the Canadian National Longitudinal Survey of Children and Youth [NLSCY; @statisticscanadaNationalLongitudinalSurvey2000].
 
-\rc{10. Please define measurement invariance (parentheses is fine - e.g., measurement equivalence) for the less statistically trained reader.}
+\Done
 
-We have addressed this comment by including the following explanation:
+\RC{10. Please define measurement invariance (parentheses is fine - e.g., measurement equivalence) for the less statistically trained reader.}
 
-> (i.e., to assume that the factor loadings of each construct are the same across time points)
+We have done as requested, and included the following explanation:
 
-11. The authors need to walk the reader through the tables better. The results section and tables need to be easier to navigate and understand. It is clear you did a tremendous amount of work on these analyses, and I want all readers to be able to follow the results very easily.
+> (i.e., to assume that the factor loadings of each construct are the same across time points and respondents)
 
-12. The findings on line 336 don't make sense given the previous line. The authors need to introduce all of the outcomes discussed in line 336: With regard to child effects, in line with hypotheses, the intercept of the cross-lagged
+\RC{11. The authors need to walk the reader through the tables better. The results section and tables need to be easier to navigate and understand. It is clear you did a tremendous amount of work on these analyses, and I want all readers to be able to follow the results very easily.}
+
+\WorkInProgress
+
+\RC{12. The findings on line 336 don't make sense given the previous line. The authors need to introduce all of the outcomes discussed in line 336: With regard to child effects, in line with hypotheses, the intercept of the cross-lagged}
 
 335 effect of emotional adjustment on maternal warmth was positive and significant (Table 2).
 336 Thus, when children displayed better emotional adjustment than usual in one year, their
 337 mothers displayed more anger and inductive reasoning, but also more warmth, than usual in
 338 the next year.
 
-\rc{13. Line 383 you use "discipline" for the first time. Do you mean demandingness?}
+\WorkInProgress
+
+\RC{13. Line 383 you use "discipline" for the first time. Do you mean demandingness?}
 
 Apologies for the oversight; we simply meant to say Inductive Reasoning. We have corrected this typo in the revision.
 
-\rc{14. I don't understand your argument in the discussion around the within family significant association between consistency and adjustment. You're saying that because you found tween family level correlations but not within family correlations that this suggests other correlated variables like economic hardship do not explain this association? What do your findings mean?}
+\Done
 
-With all due respect, we do not entirely understand the Reviewer's comment, but we take it to mean that our argumentation in this paragraph was unclear. In the revision, we have rewritten this section as follows:
+\RC{14. I don't understand your argument in the discussion around the within family significant association between consistency and adjustment. You're saying that because you found tween family level correlations but not within family correlations that this suggests other correlated variables like economic hardship do not explain this association? What do your findings mean?}
 
-> On average, we found no support for within-family predictive links between consistency and adjustment, but we did find support for between-family level correlations. Between-family level correlations can have different causes: They can reflect the consolidated influence of predictive effects that occurred prior to the study, or alternatively, the influence of third variables that impact both constructs. The fact that our study included children from a very young age casts doubt on the former explanation. It seems more likely that third variables explain these associations. Economic hardship, for instance, undermines parents' capacity for consistent parenting, as well as children's socio-emotional adjustment [@mcloydImpactEconomicHardship1990]. This finding means that we should reflect critically on causal interpretations of prior research that did not control for stable between-family differences [e.g., @brandPerceivedParentalInconsistency1990]. 
+We are not sure that we fully understand the Reviewer's comment, but we take it to mean that our argumentation in this paragraph was unclear. In the revision, we have rewritten this section as follows:
 
-\rc{15. Regarding the direction of effects, is your conclusion that child effects are stronger than parenting effects driven entirely by the size of the coefficient? Did you conduct any tests to compare the two models and their coefficients?} 
+> On average, we found no support for within-family predictive links between consistency and adjustment, but we did find support for between-family level correlations. Between-family level correlations can have different causes: They can reflect the consolidated influence of predictive effects that occurred prior to the study, or alternatively, the influence of third variables that impact both constructs. The fact that our study included children from a very young age casts doubt on the former explanation. It seems more likely that third variables explain these associations. Economic hardship, for instance, undermines parents' capacity for consistent parenting, as well as children's socio-emotional adjustment [@mcloydImpactEconomicHardship1990]. This finding means that we should reflect critically on causal interpretations of prior research that did not control for stable between-family differences [e.g., @brandPerceivedParentalInconsistency1990].
 
-We appreciate the suggestion; we are indeed only interpreting the pattern of effects (i.e., which effects differ 'significantly' from zero), and it would be better to explicitly test the difference between these parameters (i.e., which parent and child effects differ significantly from one another). In the revision, we have attempted to address this comment by explicitly acknowledging this in the Discussion section. 
+\Done
+
+\RC{15. Regarding the direction of effects, is your conclusion that child effects are stronger than parenting effects driven entirely by the size of the coefficient? Did you conduct any tests to compare the two models and their coefficients?} 
+
+We appreciate this suggestion! Strictly speaking, since Bayesian analyses focus on estimation rather than inference, it is correct to say that the (maximum a-posteriori) estimate is different between mothers and fathers, without further substantiation - because in the Bayesian framework, the maximum a-posteriori estimate can be interpreted as the most likely population value for the parameter, conditional on the data and prior. In practice, since we use Bayesian estimation for pragmatic reasons, we understand that there is added value in knowing the posterior distribution of the difference between mothers and fathers.
+
+Therefore, to address this comment, we have re-run all analyses to obtain the posterior for the differences between mothers and fathers. We have reported this information in-text whenever making a statement about mother/father differences, and have added it to the relevant Supplementary Tables with the full model parameters. We have omitted it from the smaller Tables in the manuscript, because their function is to help make it easier for readers to digest the results, and we feel that adding four columns with difference tests would interfere with that goal. 
+
+\WorkInProgress
+
+<!--We appreciate the suggestion; we are indeed only interpreting the pattern of effects (i.e., which effects differ 'significantly' from zero), and it would be better to explicitly test the difference between these parameters (i.e., which parent and child effects differ significantly from one another). In the revision, we have attempted to address this comment by explicitly acknowledging this in the Discussion section. 
 
 We would prefer not to incorporate these tests for two reasons:
 
@@ -242,33 +353,33 @@ We would prefer not to incorporate these tests for two reasons:
 
 If the Editor deems it necessary to include these tests nonetheless, we will do so of course, but we'd need a longer turnaround time for the next revision.
 
-\Done
+\Done-->
 
-\rc{I assume parenting and child effects were run separately considering they are modeled as predicting different outcomes?}
+\RC{I assume parenting and child effects were run separately considering they are modeled as predicting different outcomes?}
 
-This is not the case; parent and child effects refer to the reciprocal effects between the parenting variables and child adjustment; both variables must be included in one model to examine these reciprocal effects.
+This assumption is incorrect; parent and child effects refer to the reciprocal effects between the parenting variables and child adjustment; both variables must be included in one model to examine these reciprocal effects. This is outlined in the paragraph below:
 
-\Done
-
-\rc{16. Can you test for non-linear effects of quantitative involvement on emotional adjustment? Your explanation that excessive involvement leads to maladjustment makes sense, but one would expect a u-shaped curve in which adjustment is highest at an optimal middle ground of involvement.}
-
-We appreciate the Reviewer's suggestion. There are probably good grounds to question the linearity of *all* processes within the family system. However, it is not within the scope of our paper to make that point. We would be happy to conduct the exploratory analysis proposed by the Reviewer, but we are limited by the possibilities of contemporary statistical software. Estimating this non-linear effect involves a latent variable interaction of quantitative involvement with itself, to obtain the quadratic term. Latent variable interactions cannot currently be estimated within the Bayesian framework (they require Monte Carlo integration). Thus, we must choose: We can either test our theoretical model, which requires Bayesian estimation using Gibbs sampling, or we can conduct some kind of exploratory analysis of this proposed non-linear effect but with a much simpler model that can be estimated using numerical integration. Of course, we would prefer to analyze our theoretical model.
+> To address our research questions, we used multilevel, autoregressive structural equation modeling [@asparouhovDynamicStructuralEquation2018]. In this approach, the variance in qualitative parenting behaviors and emotional adjustment is partialized into stable between-individual differences (the mean level for that individual across all measurement occasions), and within-individual fluctuations (deviations from this person-specific mean). This has several advantages: First, controlling for stable between-family differences allows us to estimate the direction of within-family effects more accurately [@hamakerCritiqueCrosslaggedPanel2015]. Any stable factors which might bias cross-lagged effects - such as the influence of SES or neighborhood effects - are accounted for at the between level, and reflected in the correlations between the random intercepts. Secondly, this approach enables us to directly test our hypothesis that between-family differences in quantitative involvement moderate the interplay between qualitative involvement and emotional adjustment: Between-family differences in the interplay between qualitative parenting behaviors and emotional adjustment are estimated as random effects, and we can include between-family level moderators as predictors of these random effects. In this way, we included total joint childcare, the childcare distribution, and child sex as moderators. We conducted separate analyses for the four qualitative parenting dimensions, because a model including all four variables at once was too complex to estimate. 
 
 \Done
 
-\rc{You could also test for mean differences in emotional adjustment for children with highly involved parents versus less involved parents. It could be, as you argue in the next section of the discussion, that the effect of involvement on emotional adjustment is stronger when only one parent is involved because there is less variability in children's adjustment when both parents are highly involved. This would help test your two suggested explanations.}
+\RC{16. Can you test for non-linear effects of quantitative involvement on emotional adjustment? Your explanation that excessive involvement leads to maladjustment makes sense, but one would expect a u-shaped curve in which adjustment is highest at an optimal middle ground of involvement.}
 
-We appreciate the suggestion, but we believe that this comment might be due to an oversight on the Reviewer's part. We do investiage these effects, and they are reported in the section titled **Effects of quantitative involvement on parenting and adjustment**. That is why we suggested those explanations in the Discussion. Here are the relevant fragments from the Results section:
-
-> Counter to our hypothesis, we found that greater total joint involvement was negatively associated with emotional adjustment. Thus, the children in families with highly involved parents generally displayed poorer emotional adjustment.
-
-And:
-
-> Finally, our hypothesis that children's emotional adjustment would be poorer in families where mothers were relatively more involved than fathers was supported.
+We appreciate the Reviewer's suggestion, and agree that there are probably good grounds to question the linearity of *all* processes within the family system. However, it is not within the scope of the present paper to make that point. In principle, we would be happy to conduct the exploratory analysis proposed by the Reviewer, but we are stopped by the limitations of contemporary statistical software. Including a quadratic term for this non-linear effect requires estimating a latent variable interaction of quantitative involvement with itself. Such latent variable interactions cannot currently be estimated within the Bayesian framework; they require Monte Carlo integration. Thus, we must choose: We can either test our theoretical model, which requires Bayesian estimation using Gibbs sampling, or we analyze this proposed non-linear effect, but within a much simpler model that can be estimated using numerical integration. Of course, we would prefer to analyze our theoretical model.
 
 \Done
 
-# References
+\RC{17. You could also test for mean differences in emotional adjustment for children with highly involved parents versus less involved parents. It could be, as you argue in the next section of the discussion, that the effect of involvement on emotional adjustment is stronger when only one parent is involved because there is less variability in children's adjustment when both parents are highly involved. This would help test your two suggested explanations.}
+
+We agree with the Reviewer that mean differences in emotional adjustment based on low vs high involvement are important. That is why we do investiage these effects, and they are reported in the section titled **Effects of quantitative involvement on parenting _and adjustment_**. That is why we suggested those explanations in the Discussion. Here are the relevant fragments from the Results section:
+
+> Counter to our hypothesis, we found that greater total joint involvement was negatively associated with emotional adjustment. Thus, the children in families with highly involved parents generally displayed poorer emotional adjustment.  
+*[...]*  
+Finally, our hypothesis that children's emotional adjustment would be poorer in families where mothers were relatively more involved than fathers was supported.
+
+\Done
+
+\section*{References}
 
 \setlength{\leftskip}{0.4in}
 \setlength{\parindent}{-0.4in}
