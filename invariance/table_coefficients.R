@@ -110,4 +110,15 @@ starts = sections[-length(sections)],
 ends = sections[-1], SIMPLIFY = FALSE)
 names(tab_std_sections) <- tab_std$Parameter[sections][-length(sections)]
 
-save(tab_std, tab_unst, tab_std_sections, file = "table_coefficients.RData")
+
+# Split UNST --------------------------------------------------------------
+
+sections <- c(which(rowSums(is.na(tab_unst)) == 8), (nrow(tab_unst)+1))
+tab_unst_sections <- mapply(function(starts, ends) {
+  tab_unst[starts:(ends-1),]
+},
+starts = sections[-length(sections)],
+ends = sections[-1], SIMPLIFY = FALSE)
+names(tab_unst_sections) <- tab_unst$Parameter[sections][-length(sections)]
+
+save(tab_std, tab_unst, tab_std_sections, tab_unst_sections, file = "table_coefficients.RData")
