@@ -29,6 +29,8 @@ Thank you for considering our manuscript for publication in `r journal`. We here
 
 We thank you and the Reviewers for your thorough comments, and for the helpful summary you've provided. We hope that you will find that our responses adequately address the issues raised, and that the quality of the work has been improved. 
 
+With regard to the Editorial Office's request that we upload a Word or RTF file: In line with the Submission Guidelines on the Developmental Psychology website, we have provided \latex as a `zip`-file, with accompanying `.pdf`. We do not have a Word version of this manuscript available.
+
 <!--The revised manuscript (including title page, abstract, and references) comprises 35 pages, or 8666 words. Four supplementary tables are included, whose size prohibits them from being included in the manuscript: A full correlation table (total sample and paneled by adolescent sex); the full matrix of parameter estimates; detailed scale descriptives and intercorrelations, and a full matrix of parameter estimates for an alternative analysis suggested by a Reviewer. 
 Should the manuscript be accepted, we are prepared to make all syntax and results of the analyses conducted available on a public code repository referenced in the paper, to safeguard reproducibility. 
 Treatment of participants was in accordance with the APA ethical principles. On behalf of the authors, I declare that I have no conflicts of interest concerning this article. I will serve as the corresponding author for this manuscript.-->
@@ -268,7 +270,17 @@ In the original manuscript, we included four Tables with the results reported in
 
 We appreciate this suggestion! Strictly speaking, since Bayesian analyses focus on estimation rather than inference, it is correct to say that the (maximum a-posteriori) estimate is different between mothers and fathers, without further substantiation - because in the Bayesian framework, the maximum a-posteriori estimate can be interpreted as the most likely population value for the parameter, conditional on the data and prior. In practice, since we use Bayesian estimation for pragmatic reasons, we understand that there is added value in knowing the posterior distribution of the difference between mothers and fathers.
 
-Therefore, to address this comment, we have re-run all analyses to obtain the posterior for the differences between mothers and fathers. We have reported this information in-text whenever making a statement about mother/father differences, and have added it to the relevant Supplementary Tables with the full model parameters. We have omitted it from the smaller Tables in the manuscript, because their function is to help make it easier for readers to digest the results, and we feel that adding four columns with difference tests would interfere with that goal. 
+Therefore, to address this comment, we have re-run all analyses to obtain the posterior for the differences between corresponding parent- and child effects. We have explained this procedure in the text (fragment cited below), and have added it to Table 2 in the form of labels that indicate which parameters differed significantly, and we have reported the full difference tests in Supplementary Table S5.
+
+<!--The interpretation of the difference tests is straightforward, because they exactly mirror the pattern of significant/non-significant parent and child effects: All effects that are significant in one direction, but non-significant in the reverse direction, have significant difference tests. All effects that are significant in both directions, or non-significant in both directions, have non-significant difference tests. It is therefore justifiable to simply interpret the pattern of significant parent- and child effects.
+
+Section in Results:
+
+> We established direction of effects by testing the significance of the difference between corresponding parent- and child effects (see Table \@ref(tab:tabcrosspath) and Supplementary Table S5). All effects that were significant in one direction, and non-significant in the opposite direction, had significant difference tests. All effects that were significant (or non-significant) in both directions had non-significant difference tests.
+
+Table note:
+
+> Matching letters indicate that parameters differed significantly, see Supplementary Table S5.-->
 
 \WorkInProgress
 
@@ -412,13 +424,27 @@ We are not sure that we fully understand the Reviewer's comment, but we take it 
 
 \RC{15. Regarding the direction of effects, is your conclusion that child effects are stronger than parenting effects driven entirely by the size of the coefficient? Did you conduct any tests to compare the two models and their coefficients?} 
 
+We appreciate this suggestion! Strictly speaking, since Bayesian analyses focus on estimation rather than inference, it is correct to say that the (maximum a-posteriori) estimate is different between mothers and fathers, without further substantiation - because in the Bayesian framework, the maximum a-posteriori estimate can be interpreted as the most likely population value for the parameter, conditional on the data and prior. In practice, since we use Bayesian estimation for pragmatic reasons, we understand that there is added value in knowing the posterior distribution of the difference between mothers and fathers.
+
+Therefore, to address this comment, we have re-run all analyses to obtain the posterior for the differences between corresponding parent- and child effects. We have explained this procedure in the text (fragment cited below), and have added it to Table 2 in the form of labels that indicate which parameters differed significantly, and we have reported the full difference tests in Supplementary Table S5.
+
+The interpretation of the difference tests is straightforward, because they exactly mirror the pattern of significant/non-significant parent and child effects: All effects that are significant in one direction, but non-significant in the reverse direction, have significant difference tests. All effects that are significant in both directions, or non-significant in both directions, have non-significant difference tests. It is therefore justifiable to simply interpret the pattern of significant parent- and child effects.
+
+Section in Results:
+
+> We established direction of effects by testing the significance of the difference between corresponding parent- and child effects (see Table \@ref(tab:tabcrosspath) and Supplementary Table S5). All effects that were significant in one direction, and non-significant in the opposite direction, had significant difference tests. All effects that were significant (or non-significant) in both directions had non-significant difference tests.
+
+Table note:
+
+> Matching letters indicate that parameters differed significantly, see Supplementary Table S5.
+
 <!-- WRONG ANSWER!! [RK17]Let op: dit is niet het goede antwoord op de vraag!!! --> 
 
 <!--We appreciate this suggestion! Strictly speaking, since Bayesian analyses focus on estimation rather than inference, it is correct to say that the (maximum a-posteriori) estimate is different between mothers and fathers, without further substantiation - because in the Bayesian framework, the maximum a-posteriori estimate can be interpreted as the most likely population value for the parameter, conditional on the data and prior. In practice, since we use Bayesian estimation for pragmatic reasons, we understand that there is added value in knowing the posterior distribution of the difference between mothers and fathers.
 
 Therefore, to address this comment, we have re-run all analyses to obtain the posterior for the differences between mothers and fathers. We have reported this information in-text whenever making a statement about mother/father differences, and have added it to the relevant Supplementary Tables with the full model parameters. We have omitted it from the smaller Tables in the manuscript, because their function is to help make it easier for readers to digest the results, and we feel that adding four columns with difference tests would interfere with that goal. -->
 
-\WorkInProgress
+\Done
 
 <!--We appreciate the suggestion; we are indeed only interpreting the pattern of effects (i.e., which effects differ 'significantly' from zero), and it would be better to explicitly test the difference between these parameters (i.e., which parent and child effects differ significantly from one another). In the revision, we have attempted to address this comment by explicitly acknowledging this in the Discussion section. 
 

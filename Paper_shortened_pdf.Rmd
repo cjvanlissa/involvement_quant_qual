@@ -226,9 +226,7 @@ We also examined within-family correlations, which are based on the residuals of
 
 ## Within-family predictive effects
 
-At the within-family level, we examined over-time cross-lagged effects between qualitative parenting and emotional adjustment. The intercepts of these random effects reflect the average cross-lagged effect across families. Their variances indicate whether the effect differs in strength (and sign) between families. 
-
-With regard to within-families parenting effects, none of the intercepts differed significantly from zero, excepting the effect of maternal warmth on children's emotional adjustment (Table \@ref(tab:tabcrosspath)). Thus, on average, mothers' warmth had a positive significant predictive effect on children's emotional adjustment. The variances of all parenting effects were all significant, however, indicating that the effect of qualitative parenting behaviors on children's emotional adjustment varies across families. Moreover, these variances were notably larger for fathers than for mothers, indicating that fathers have a more variable effect on their children through specific parenting behaviors than mothers do.
+At the within-family level, we examined over-time predictive effects between qualitative parenting and emotional adjustment. The intercepts of these random effects reflect the average effect across families. Their variances indicate whether the effect differs in strength (and sign) between families. With regard to within-families parenting effects, none of the intercepts differed significantly from zero, excepting the effect of maternal warmth on children's emotional adjustment (Table \@ref(tab:tabcrosspath)). Thus, on average, mothers' warmth had a positive significant predictive effect on children's emotional adjustment. The variances of all parenting effects were all significant, however, indicating that the effect of qualitative parenting behaviors on children's emotional adjustment varies across families. Moreover, these variances were notably larger for fathers than for mothers, indicating that fathers have a more variable effect on their children through specific parenting behaviors than mothers do.
 
 ```{r tabcrosspath, results = "asis"}
 tabparenteff <- rbind(tab_std_sections$`Intercepts of parenting effects`, 
@@ -245,11 +243,33 @@ tabchildeff$Parameter[c(1,4)] <- c("Random intercepts of child effects on:", "Va
 tab <- rbind(tabparenteff, tabchildeff)
 #tab[is.na(tab)] <- ""
 rownames(tab) <- NULL
+
+# Add letters for contrast tests
+
+stars <- tab_unst_sections$`Defined parameters`[tab_unst_sections$`Defined parameters`$Parameter %in% c("Mother effect - child effect on mother", "Father effect - child effect on father"), ]
+letter <- 1
+tabrows <- list(c(2,8),
+                c(3, 9))
+
+for(i in 1:length(tabrows)){
+  if(any(grepl("\\*", stars[i, ]))){
+    for(c in which(grepl("\\*", stars[i, ]))){
+      # c = 6
+      tab[tabrows[[i]], c] <- paste0(tab[tabrows[[i]], c], letters[letter])
+      letter <<- letter + 1
+    }
+  }
+}
+
 tab$Parameter <- gsub("^Variance", "Unstandardized variance", tab$Parameter)
-reg_table(tab, caption = "Standardized between-family level intercepts and unstandardized variances of within-family predictive effects", note = "Est.: Estimate. HDPI: Highest posterior density interval. Emo.: Emotional adjustment. *: <5% of posterior has opposite sign from estimate.")
+reg_table(tab, caption = "Standardized between-family level intercepts and unstandardized variances of within-family predictive effects", note = "Est.: Estimate. HDPI: Highest posterior density interval. Emo.: Emotional adjustment. *: <5% of posterior has opposite sign from estimate. Matching letters indicate that parameters differed significantly, see Supplementary Table S5.")
 ```
 
 With regard to child effects, in line with hypotheses, the intercept of the cross-lagged effect of emotional adjustment on maternal warmth was positive and significant (Table \@ref(tab:tabcrosspath)). Thus, when children displayed better emotional adjustment than usual in one year, their mothers displayed more warmth than usual in the next year. Contrary to hypotheses, the intercept of the effect of emotional adjustment on maternal consistency was non-significant. As hypothesized, the intercept for maternal inductive reasoning was positive. Counter to hypotheses, the intercept for maternal anger was positive, not negative. Thus, when children displayed better emotional adjustment than usual in one year, their mothers displayed more anger than usual in the next year. In partial support of hypotheses, the intercept for the child effect of adjustment on paternal warmth was positive and significant. None of the other intercepts for child effects on paternal parenting were significant. The variances of all child effects were all significant but small, indicating that the effect of children's emotional adjustment on their parents' child-rearing behaviors differs somewhat between families.
+
+We established direction of effects by testing the significance of the difference between corresponding parent- and child effects (see Table \@ref(tab:tabcrosspath) and Supplementary Table S5). All effects that were significant in one direction, and non-significant in the opposite direction, had significant difference tests. All effects that were significant (or non-significant) in both directions had non-significant difference tests. 
+
+We examined differences between fathers and mothers the same way. <!-- NOG DOEN -->
 
 ## Effects of quantitative involvement on parenting and adjustment
 
