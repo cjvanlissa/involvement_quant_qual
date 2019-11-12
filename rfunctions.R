@@ -1,3 +1,25 @@
+add_letters <- function(contrast_list, tab, tab_unst_sections, superscript = FALSE){
+  stars <- tab_unst_sections$`Defined parameters`[match(names(contrast_list),
+                                                        tab_unst_sections$`Defined parameters`$Parameter), ]
+  
+  for(i in 1:nrow(stars)){
+    if(any(grepl("\\*", stars[i, ]))){
+      for(c in which(grepl("\\*", stars[i, ]))){
+        if(superscript){
+          tab[contrast_list[[i]], c] <- paste0(tab[contrast_list[[i]], c], "$^{", letters[letter], "}$")
+          tab[contrast_list[[i]], c] <- gsub("\\}\\$\\$\\^\\{", "", tab[contrast_list[[i]], c])
+        } else {
+          tab[contrast_list[[i]], c] <- paste0(tab[contrast_list[[i]], c], letters[letter])
+          tab[contrast_list[[i]], c] <- gsub("\\}\\$\\$\\^\\{", "", tab[contrast_list[[i]], c])
+        }
+      
+        letter <<- letter + 1
+      }
+    }
+  }
+  tab
+}
+
 rename_pars <- function(x){
   new_labels <- x
   new_labels <- gsub("\\.Within", "", new_labels)
@@ -60,6 +82,24 @@ reg_table <- function(x, ...){
   tab
 }
 
+
+reg_table_escape_false <- function(x, ...){
+  rownames(x) <- NULL
+  names(x) <- gsub("^.+est_sig$", "Est.", names(x))
+  names(x) <- gsub("^.+confint$", "95\\% HPDI", names(x))
+  tab <- apa_table(x, format = "latex", col_spanners = colspan_fun(x, skip = 1), escape = FALSE, ...)
+  browser()
+  tab <- gsub('(^"|"$)', '', tab)
+  tab <- gsub("^\\[1\\] ", "", tab)
+  tab <- gsub("\\n(.+?) & NA & NA & NA & NA & NA & NA & NA & NA\\\\\\\\\\n", "\\\\multicolumn\\{9\\}\\{l\\}\\{\\1\\}\\\\\\\\", tab, perl = TRUE)
+  #tab <- gsub("\\\\", "\\", tab)
+  #tab <- gsub("\\\\begin", "\\begin", tab)
+  #tab <- gsub("\\\\n(?!=orm)", "\\\\", tab, perl = TRUE)
+  #tab <- gsub("%", "\\%", tab)
+  #cat(tab, sep = "\n")
+  #knitr::raw_latex(tab)
+  tab
+}
 
 reg_table_html <- function(x, ...){
   rownames(x) <- NULL

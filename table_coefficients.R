@@ -47,8 +47,7 @@ order_rows <- c("Between-family level correlations",
                 "Random intercept variances",
                 "Variances.SMOTHMOTH", "Variances.SFATHFATH", "Variances.SEMOEMO",
                 "Defined parameters",
-                paste0("New.Additional.Parameters.P", 1:18)
-                
+                paste0("New.Additional.Parameters.P", 1:20)
 )
 
 label_defined_pars <- c(p1 = "F-M Within-family correlations with emo.",
@@ -68,7 +67,9 @@ label_defined_pars <- c(p1 = "F-M Within-family correlations with emo.",
                          p15 = "F-M Variance of parenting effect",
                          p16 = "F-M Variance of child effect",
                          p17 = "Mother effect - child effect on mother",
-                         p18 = "Father effect - child effect on father")
+                         p18 = "Father effect - child effect on father",
+                        p19 = "F-M Parent effects on emo.",
+                        p20 = "F-M Child effects on parenting")
 
 tab_fun <- function(x, ...){
   tables <- lapply(results, printResultsTable, keepCols = c("label", "est_sig",
@@ -111,7 +112,6 @@ tab_fun <- function(x, ...){
   names(tables)[1] <- "Parameter"
   
   tables$Parameter <- rename_pars(tables$Parameter)
-  
   tables$Parameter[match(paste0("New.Additional.Parameters.", toupper(names(label_defined_pars))), tables$Parameter)] <- label_defined_pars
   tables
 }
@@ -120,7 +120,15 @@ tab_std <- suppressWarnings(tab_fun(results, parameters = "stdyx.standardized"))
 tab_std <- tab_std[!tab_std$Parameter %in% c("Defined parameters", label_defined_pars),]
 tab_unst <- suppressMessages(tab_fun(results, parameters = "unstandardized"))
 
+# Replace minus because I accidentally reversed F and M for p19/p20 -------
 
+replace_minus <- 
+sapply(tab_unst[tab_unst$Parameter %in% c("F-M Parent effects on emo.",
+                                          "F-M Child effects on parenting"), ], gsub, pattern = "(^|\\s)0", replacement = "X0", perl = TRUE)
+replace_minus <- gsub(pattern = "-0", replacement = " 0", replace_minus)
+replace_minus <- gsub(pattern = "X0", replacement = "-0", replace_minus)
+tab_unst[tab_unst$Parameter %in% c("F-M Parent effects on emo.",
+                                   "F-M Child effects on parenting"), ] <- replace_minus
 
 write.csv(tab_std, "tab_std.csv", row.names = FALSE, na = "")
 write.csv(tab_unst, "tab_unst.csv", row.names = FALSE, na = "")
