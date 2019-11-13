@@ -129,7 +129,14 @@ if(any(df_nodes$shape == "oval")){
                                                                            b = .5*ellipses_b, angle = 0), fill = "white", colour = "black")
 }
 p <- p + geom_text(data = df_nodes, aes(x = x, y = y, label = label), size = text_size) 
-
+move_by = -.24
+df_cors <- data.frame(t(mapply(function(from, to){
+  c(unlist(df_nodes[df_nodes$param == from, c("y", "x")])+c(0,move_by),
+    unlist(df_nodes[df_nodes$param == to, c("y", "x")])+c(0,move_by))
+}, from = c("riM", "riM", "riE"), to = c("riE", "riF", "riF"), USE.NAMES = FALSE)))
+names(df_cors) <- c("ystart", "xstart", "ymax", "xmax")
+p <- p + geom_curve(data = df_cors, aes(x = xstart, y = ystart, xend = xmax, yend = ymax), curvature = .5, linetype = 2) 
+p <- p + scale_x_continuous(expand = expand_scale(mult = c(0, .05)))
 df_edges$text_x[c(2:3)] <- 1.5
 df_edges$text_y[c(2:3)] <- c(6.2,7.8)
 p <- p + geom_label(data = df_edges[!df_edges$label == "", ],

@@ -109,6 +109,14 @@ if(any(df_nodes$shape == "rect")){
 if(any(df_nodes$shape == "oval")){
   p <- p + geom_point(data = df_nodes[df_nodes$shape == "oval", ], aes(x = x, y = y), fill = "white", colour = "black", size = 14, shape = 21)
 }
+move_by <- -.34
+df_cors <- data.frame(t(mapply(function(from, to){
+  c(unlist(df_nodes[df_nodes$param == from, c("y", "x")])+c(0,move_by),
+    unlist(df_nodes[df_nodes$param == to, c("y", "x")])+c(0,move_by))
+}, from = c("riM", "riM", "riE"), to = c("riE", "riF", "riF"), USE.NAMES = FALSE)))
+names(df_cors) <- c("ystart", "xstart", "ymax", "xmax")
+p <- p + geom_curve(data = df_cors, aes(x = xstart, y = ystart, xend = xmax, yend = ymax), curvature = .2, linetype = 2) 
+p <- p + scale_x_continuous(expand = expand_scale(mult = c(0, .055)))
 p <- p + geom_text(data = df_nodes, aes(x = x, y = y, label = label), size = text_size) 
 p <- p + geom_label(data = df_edges[df_edges$label == "1", ],
            aes(x = text_x, y = text_y, label = label), size = text_size, fill = "white", label.size = NA)+ theme(axis.line = element_blank(),
