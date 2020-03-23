@@ -19,3 +19,11 @@
 test.rmd
 test_table.rmd
 *.fff
+*.aux
+*.out
+*.gz
+*.eps
+*.txt
+*.png
+Exported items.bib
+*.zip
