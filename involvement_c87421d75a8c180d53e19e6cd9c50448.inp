@@ -1,5 +1,0 @@
-TITLE: Your title goes here
-DATA: FILE = "involvement_c87421d75a8c180d53e19e6cd9c50448.dat";
-VARIABLE: 
-NAMES = family sex time Man Fan Mco Fco Min Fin Mre Fre Mwa Fwa emo; 
-MISSING=.;

@@ -27,3 +27,5 @@ test_table.rmd
 *.png
 Exported items.bib
 *.zip
+!Mplus/synthetic_03-07-18_paper7.dat
+*.md

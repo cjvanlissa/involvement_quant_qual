@@ -179,7 +179,7 @@ Emotional adjustment was measured using the reverse-coded emotional distress sub
 
 ## Strategy of analyses
 
-To address our research questions, we used multilevel, autoregressive structural equation modeling [@asparouhovDynamicStructuralEquation2018]. In this approach, the variance in qualitative parenting behaviors and emotional adjustment is partialized into stable between-individual differences (the mean level for that individual across all measurement occasions), and within-individual fluctuations (deviations from this person-specific mean). The ICCs (supplementary Table S1) indicate the proportion of variance at the between- versus within-family level. For warmth, consistency, and anger, the ICCs were high, ranging from [.60, .64]. This indicates that about 60% of the variance in these parenting behaviors is due to between-family differences. For inductive reasoning, they were notably lower, [.46, .50]. For emotional adjustment, they were even lower, $r = .25$.
+To address our research questions, we used multilevel, autoregressive structural equation modeling [@asparouhovDynamicStructuralEquation2018]. In this approach, the variance in qualitative parenting behaviors and emotional adjustment is partialized into stable between-family differences (the mean level for each family across all measurement occasions), and within-family fluctuations (within-family deviations from the family-specific mean). The ICCs (supplementary Table S1) indicate the proportion of variance at the between- versus within-family level. For warmth, consistency, and anger, the ICCs were high, ranging from [.60, .64]. This indicates that about 60% of the variance in these parenting behaviors is due to between-family differences. For inductive reasoning, they were notably lower, [.46, .50]. For emotional adjustment, they were even lower, $r = .25$.
 
 Disentangling between- and within-family level variance allows us to determine at which of these levels associations occur, and to estimate the direction of within-family effects more accurately [@hamakerCritiqueCrosslaggedPanel2015]. Any stable factors which might bias cross-lagged effects - such as the influence of SES or neighborhood effects - are accounted for at the between level, and reflected in the correlations between random intercepts. Secondly, this approach enables us to directly test our hypothesis that between-family differences in quantitative involvement moderate the interplay between qualitative involvement and emotional adjustment: Between-family differences in the interplay between qualitative parenting behaviors and emotional adjustment are estimated as random effects, and we can include between-family level moderators as predictors of these random effects. In this way, we included joint and relative quantitative involvement, and child sex as moderators. Figure \@ref(fig:figure1) shows a graphical representation of the resulting model. We conducted separate analyses for the four qualitative parenting dimensions, because a model including all four variables at once was too complex to estimate. 
 
@@ -220,7 +220,7 @@ rownames(table_within_cor) <- NULL
 table_within_cor <- gsub("\\*+", "*", table_within_cor)
 table_within_cor <- gsub("^1$", "", table_within_cor)
 table_within_cor <- table_within_cor[-3, -seq(2, 11, by = 3)]
-table_within_cor <- rbind(c("Within-families level correlations", rep(NA, ncol(table_within_cor)-1)), table_within_cor)
+table_within_cor <- rbind(c("Within-family level correlations", rep(NA, ncol(table_within_cor)-1)), table_within_cor)
 
 table_cors <- rbind(table_between_cor, table_within_cor)
 write.csv(table_cors, "table_cors.csv", row.names = FALSE)
@@ -268,7 +268,7 @@ tab <- add_letters(list("F-M Parent effects on emo." = c(2, 3),
 
 tab$Parameter <- gsub("^Variance", "Unstandardized variance", tab$Parameter)
 names(tab)[1] <- "Param."
-reg_table(tab, caption = "Standardized between-family level intercepts (average effect) and unstandardized variances of within-family predictive effects.", note = "Param.: Parameter. Est.: Estimate. HDPI: Highest posterior density interval. Emo.: Emotional adjustment. *: <5% of posterior has opposite sign from estimate. Matching letters indicate that parameters differed significantly; see Supplementary Table S4 for all difference tests.")
+reg_table(tab, caption = "Average of the standardized within-family effects and variances of unstandardized within-family effects.", note = "Param.: Parameter. Est.: Estimate. HDPI: Highest posterior density interval. Emo.: Emotional adjustment. *: <5% of posterior has opposite sign from estimate. Matching letters indicate that parameters differed significantly; see Supplementary Table S4 for all difference tests.")
 ```
 
 With regard to child effects, in line with hypothesis $H_{2a}$, the average cross-lagged effect of emotional adjustment on maternal warmth was positive and significant (Table \@ref(tab:tabcrosspath)). Thus, on average, when children displayed better emotional adjustment than usual in one wave, their mothers displayed more warmth than usual in the next wave. Contrary to hypothesis $H_{2b}$, the average effect of emotional adjustment on maternal consistency was non-significant. As hypothesized in $H_{2c}$, the intercept for maternal inductive reasoning was positive. Counter to hypothesis $H_{2d}$, the intercept for maternal anger was positive, not negative. Thus, when children displayed better emotional adjustment than usual in one wave, their mothers displayed more anger than usual in the next wave. In support of hypothesis $H_{2a}$, the average child effect of adjustment on paternal warmth was positive and significant. None of the other intercepts ($H_{2b-d}$) for child effects on fathers' parenting were significant, suggesting that fathers' parenting was relatively unresponsive to fluctuations in children's emotional adjustment. The variances of all child effects were significant but small, indicating that the effect of children's emotional adjustment on their parents' child-rearing behaviors differs somewhat between families.
@@ -281,23 +281,23 @@ To investigate our hypotheses $H_{4-6}$, we examined the predictive effects of j
 
 ```{r tabinvolvement, results = "asis"}
 tabinv <- tab_std_sections$`Effects of quantitative involvement on parenting and adjustment`[c(1:4, 1, 5:7),]
-tabinv$Parameter[c(1,5)] <- c("Effects of joint quantitative involvement on random intercepts of:",
-                              "Effects of relative quantitative involvement on random intercepts of:")
+tabinv$Parameter[c(1,5)] <- c("Effects of joint quantitative involvement on between-family differences in:",
+                              "Effects of relative quantitative involvement on between-family differences in:")
 tabinv$Parameter <- gsub("^(.+) on (?!random).*$", "\\1", tabinv$Parameter, perl= TRUE)
 #reg_table(tabinv, caption = "Effects of quantitative involvement on parenting and adjustment", note = "Emo.: Emotional adjustment. *: <5% of posterior has opposite sign from estimate.")
 tabinvmod <- rbind(
   tab_std_sections$`Moderating effect of quantitative involvement on parenting effects`[c(1:3, 1, 4:5),],
   tab_std_sections$`Moderating effect of quantitative involvement on child effects`[c(1:3, 1, 4:5),])
 tabinvmod$Parameter <- gsub("^.+?(Mother|Father).+?$", "\\1", tabinvmod$Parameter)
-tabinvmod$Parameter[c(1,4,7,10)] <- c("Moderating effects of joint involvement on parenting effects of:",
-                              "Moderating effects of relative involvement on parenting effects of:",
-                              "Moderating effects of joint involvement on child effects on:",
-                              "Moderating effects of relative involvement on child effects on:")
+tabinvmod$Parameter[c(1,4,7,10)] <- c("Moderating effects of joint involvement on within-family parenting effects",
+                              "Moderating effects of relative involvement on within-family parenting effects",
+                              "Moderating effects of joint involvement on within-family child effects",
+                              "Moderating effects of relative involvement on within-family child effects")
 tab <- rbind(tabinv, tabinvmod)
 #tab[is.na(tab)] <- ""
 rownames(tab) <- NULL
 names(tab)[1] <- "Param."
-cat(as.character(reg_table(tab, caption = "Standardized regression coefficients of quantitative involvement on between-family differences in qualitative parenting and emotional adjustment, and on within-family predictive effects", note = "The effects reported in this Table correspond to the 'Between-family level' panel of Figure 1. Param.: Parameter. Est.: Estimate. HDPI: Highest posterior density interval. Emo.: Emotional adjustment. *: <5% of posterior has opposite sign from estimate.")))
+cat(as.character(reg_table(tab, caption = "Standardized effects of joint and relative quantitative involvement.", note = "The effects reported in this Table correspond to the 'Between-family level' panel of Figure 1. Param.: Parameter. Est.: Estimate. HDPI: Highest posterior density interval. Emo.: Emotional adjustment. *: <5% of posterior has opposite sign from estimate.")))
 ```
 
 ## Does quantitative involvement moderate within-family predictive effects?
@@ -316,13 +316,13 @@ tabsex <- rbind(
   tab_std_sections$`Sex differences in cross-lagged effects`[c(1:3, 1, 4:5),])
 tabsex$Parameter <- gsub("^.+?(Mother|Father).+?$", "\\1", tabsex$Parameter)
 tabsex$Parameter <- gsub(" on sex$", "", tabsex$Parameter)
-tabsex$Parameter[c(1,5,8)] <- c("Sex differences in random intercepts of parenting and adjustment",
-                              "Moderation of parenting effects by sex",
-                              "Moderation of child effects by sex")
+tabsex$Parameter[c(1,5,8)] <- c("Effect of sex on between-family differences in of parenting and adjustment",
+                              "Moderating effects of sex on within-family parenting effects",
+                              "Moderating effects of sex on within-family child effects")
 #tabsex[is.na(tabsex)] <- ""
 rownames(tabsex) <- NULL
 names(tab)[1] <- "Param."
-reg_table(tabsex, caption = "Standardized regression coefficients of child sex on average levels of qualitative parenting and emotional adjustment, and on within-family predictive effects.", note = "Child sex is a binary predictor (-1 = female, 1 = male). The effects reported in this Table correspond to the 'Between-family level' panel of Figure 1. Param.: Parameter. Est.: Estimate. HDPI: Highest posterior density interval. Emo.: Emotional adjustment. *: <5% of posterior has opposite sign from estimate.")
+reg_table(tabsex, caption = "Standardized effects of child sex.", note = "Child sex is a binary predictor (-1 = female, 1 = male). The effects reported in this Table correspond to the 'Between-family level' panel of Figure 1. Param.: Parameter. Est.: Estimate. HDPI: Highest posterior density interval. Emo.: Emotional adjustment. *: <5% of posterior has opposite sign from estimate.")
 ```
 
 # Discussion
