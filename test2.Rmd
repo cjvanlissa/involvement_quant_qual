@@ -1,0 +1,41 @@
+---
+title: "test"
+author: "Caspar J. van Lissa"
+date: "3/27/2020"
+output: html_document
+runtime: shiny
+---
+
+### Select car(s)
+```{r, echo=FALSE}
+
+## import car data
+data <- head(mtcars[1:6])
+data$id <- seq(1:nrow(data))
+
+## generate random car prices
+set.seed(1)
+data$price <- round(runif(nrow(data),5000,15000),0)
+
+
+myZ <- reactive({
+    addCheckboxButtons <- paste0('<input class = "mycheckbox" type="checkbox" name="row', data$id, '" value="op', data$id, '">',"")
+  #Display table with checkbox buttons
+  z <- cbind(Pick=addCheckboxButtons, data)
+  z
+})
+```
+
+```{r}
+output$mytable = renderDataTable({
+  myZ()
+},
+    callback = "function(table) {
+    table.on('click.dt', 'tr', function() {
+    Shiny.onInputChange('rows',$('.mycheckbox').map(function(){return this.checked*1;}).get().join(\",\"))
+    });
+}")
+
+## display table
+dataTableOutput({"mytable"})
+```

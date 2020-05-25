@@ -18,3 +18,14 @@
 *.dgm
 test.rmd
 test_table.rmd
+*.fff
+*.aux
+*.out
+*.gz
+*.eps
+*.txt
+*.png
+Exported items.bib
+*.zip
+!Mplus/synthetic_03-07-18_paper7.dat
+*.md
